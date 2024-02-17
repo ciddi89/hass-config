@@ -1,0 +1,1896 @@
+- id: '1686857009649'
+  alias: Notification - Postkasten Einwurf
+  description: 'Setze Helfer auf true bei Einwurf '
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 3194e85fdd595fda73ac2101642fbaee
+    entity_id: binary_sensor.briefkasten_einwurf_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.briefkasten_status
+  - service: notify.mobile_app_christians_iphone
+    data:
+      message: "Die Post ist da! \U0001F4EC"
+      title: "Sweet Home \U0001F3E1"
+  mode: single
+- id: '1686867402107'
+  alias: States - Briefkasten Entleerung
+  description: 'Setze Helfer auf false bei Entleerung '
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 37e4b5e97956a09bc9df3564760f3c5f
+    entity_id: binary_sensor.briefkasten_klappe_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.briefkasten_status
+  mode: single
+- id: '1687360370770'
+  alias: Notification - System/Addon Update
+  description: ''
+  use_blueprint:
+    path: mdegat01/update_notifications.yaml
+    input:
+      send_to_ha: true
+      reminder_hours: '24'
+      mobile_app_device: 8c8704041f95b4a801662374c49fc21f
+      mobile_app_device_2: 5b916f6c2a8e3ac7c68cee8a9f0612ff
+      update_entities:
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      - update.hacs_update
+- id: '1688243312052'
+  alias: Notification - Klingel Nachricht
+  description: Sende Nachricht wenn jemand an der Haustür klingelt
+  trigger:
+  - platform: device
+    domain: homematicip_local
+    device_id: f12cc6440e04f0698fded750d72af250
+    event_type: homematic.keypress
+    address: 0026DBE998FDA3
+    device_type: HmIP-DSD-PCB
+    interface_id: RaspberryMatic-HmIP-RF
+    type: press_short
+    subtype: 1
+  condition: []
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /config/www/tmp/auffahrt_snapshot.jpg
+    target:
+      entity_id: camera.auffahrt_high
+  - service: notify.mobile_app_christians_iphone
+    data:
+      message: Ding Dong! Jemand ist an der Tür!
+      title: "Sweet Home \U0001F3E1"
+      data:
+        image: https://hass.christian-behrends.de/local/tmp/auffahrt_snapshot.jpg
+        entity_id: camera.auffahrt_high
+  mode: single
+- id: '1688768107414'
+  alias: Licht - Küche BWM
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.anwesenheit_sensoren_kuche
+      light_switch:
+        entity_id: scene.kuche_tag
+      end_scenes:
+      - scene.kuche_aus
+      time_delay: 1.5
+      include_bypass: bypass_enabled_turn_on
+      bypass_time_delay: 0.25
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.kuche_bwm_illuminance_lux
+      ambient_light_options: ambient_light_option_enabled
+      include_night_lights: night_lights_enabled
+      night_time_delay: 0.5
+      night_lights_after_time: '23:00:00'
+      night_lights_before_time: 07:00:00
+      include_time: time_disabled
+      after_time: 07:00:00
+      before_time: '23:00:00'
+      include_light_control:
+      - use_transition
+      night_lights:
+        entity_id: scene.kuche_nacht
+      night_lights_conditions:
+      - time_enabled
+      motion_bypass: input_boolean.licht_kuche_bypass
+      include_night_light_control:
+      - use_transition
+      ambient_light_value: 20
+      light_transition_on: 0.6
+      light_transition_off: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+- id: '1688840530518'
+  alias: Notification - Temperatur Aussen Innen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.boiler_outside_temperatur
+  condition:
+  - condition: state
+    entity_id: person.christian
+    state: home
+  action:
+  - if:
+    - condition: state
+      entity_id: input_boolean.helfer_temperatur_a_h_i
+      state: 'on'
+    - condition: numeric_state
+      entity_id: sensor.boiler_outside_temperatur
+      below: sensor.boiler_room_temperatur
+    then:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.helfer_temperatur_a_h_i
+    - service: notify.mobile_app_christians_iphone
+      data:
+        title: "Sweet Home \U0001F3E1"
+        message: Außentemperatur({{states.sensor.boiler_outside_temperatur.state}}°C)
+          ist niedriger als Innentemperatur({{states.sensor.boiler_room_temperatur.state}}°C)
+    else:
+    - condition: numeric_state
+      entity_id: sensor.boiler_outside_temperatur
+      above: sensor.boiler_room_temperatur
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.helfer_temperatur_a_h_i
+  mode: single
+- id: '1689530556005'
+  alias: Anwesenheit - Ankommen / Verlassen
+  description: "Ankommen: \n- Alarmanlage aus\n- Haustür aufschliessen\n- im Dunkeln
+    Lichter  bypässe aktivieren\n- Rufumleitung deaktivieren\n\nVerlassen: \n- Alarmanlage
+    an\n- Haustür abschliessen\n- Rufumleitung aktivieren"
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.christians_iphone
+    zone: zone.home
+    event: enter
+    id: Betreten
+  - platform: zone
+    entity_id: device_tracker.christians_iphone
+    zone: zone.home
+    event: leave
+    id: Verlassen
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Betreten
+      sequence:
+      - service: alarm_control_panel.alarm_disarm
+        data: {}
+        target:
+          entity_id: alarm_control_panel.safe_alarm_panel
+      - service: lock.unlock
+        data: {}
+        target:
+          entity_id: lock.haustur
+      - if:
+        - condition: sun
+          after: sunset
+          after_offset: '-15'
+        then:
+        - service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.auffahrt_licht
+        - service: input_boolean.turn_on
+          data: {}
+          target:
+            entity_id:
+            - input_boolean.licht_bypass_flur_eg
+            - input_boolean.licht_bypass_flur_og
+        - service: scene.turn_on
+          data: {}
+          target:
+            entity_id:
+            - scene.kuche_tag
+            - scene.wohnzimmer_abends_standart
+    - conditions:
+      - condition: trigger
+        id:
+        - Verlassen
+      sequence:
+      - service: scene.turn_on
+        data: {}
+        target:
+          entity_id: scene.schlafenszeit
+      - service: lock.lock
+        data: {}
+        target:
+          entity_id: lock.haustur
+      - service: alarm_control_panel.alarm_arm_home
+        data: {}
+        target:
+          entity_id: alarm_control_panel.safe_alarm_panel
+  mode: single
+- id: '1689707453470'
+  alias: Notification - Sicherheitssystem
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.safe_alarm_panel
+    to: armed_away
+    id: Aktiv - Abwesend
+    from:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.safe_alarm_panel
+    to: armed_home
+    id: Aktiv - zu Hause
+    from:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.safe_alarm_panel
+    to: armed_night
+    id: Aktiv - Nacht
+    from:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.safe_alarm_panel
+    to: disarmed
+    id: Deaktiviert
+    from:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.safe_alarm_panel
+    to: triggered
+    id: Ausgelöst
+    from:
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Aktiv - Abwesend
+        - Aktiv - zu Hause
+        - Aktiv - Nacht
+      sequence:
+      - service: notify.notify
+        data:
+          title: Alarmsystem
+          message: "{% set anzahl_offene_fenster = states('sensor.offene_fenster')
+            | float %} {% set anzahl_offene_turen = states('sensor.offene_tueren')
+            | float %} {% set alarm_status = states(\"alarm_control_panel.safe_alarm_panel\")
+            %}  {% if alarm_status == 'armed_home' %} {% set alarm_status_de = 'Hüllschutz'
+            %} {% elif alarm_status == 'armed_away' %} {% set alarm_status_de = 'Vollschutz'
+            %} {% elif alarm_status == 'armed_night' %} {% set alarm_status_de = 'Nachtschutz'
+            %} {% endif %}\n\nDer {{alarm_status_de}} wurde aktiviert! {% if anzahl_offene_fenster
+            == 0 and anzahl_offene_turen == 0 %} Alle Türen und Fenster sind geschlossen.
+            \U0001F44C\U0001F3FB {% elif anzahl_offene_fenster == 1 and anzahl_offene_turen
+            == 0 %} Achtung! Folgendes Fenster ist noch geöffnet: {{expand('binary_sensor.alle_fenster')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ')}} ☝\U0001F3FC {% elif anzahl_offene_fenster > 1 and anzahl_offene_turen
+            == 0 %} Achtung! Folgende Fenster sind noch geöffnet: {{expand('binary_sensor.alle_fenster')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ')}} ☝\U0001F3FC {% elif anzahl_offene_fenster == 0 and anzahl_offene_turen
+            == 1 %} Achtung! Folgende Tür ist noch geöffnet: {{expand('binary_sensor.alle_turen')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ')}} \U0001F448\U0001F3FC {% elif anzahl_offene_fenster == 0 and anzahl_offene_turen
+            > 1 %} Achtung! Folgende Türen sind noch geöffnet: {{expand('binary_sensor.alle_turen')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ')}} \U0001F448\U0001F3FC {% else %} Achtung! Folgende Tür(en) und Fenster
+            sind noch geöffnet: {{expand('binary_sensor.alle_fenster')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ') }}, {{expand('binary_sensor.alle_turen')|selectattr('state','eq','on')|map(attribute='name')|list|join(',
+            ')}} \U0001F448\U0001F3FC {% endif %}"
+    - conditions:
+      - condition: trigger
+        id:
+        - Deaktiviert
+      sequence:
+      - service: notify.notify
+        data:
+          title: Sicherheitssystem
+          message: "Die Alarmanlage wurde deaktiviert! \U0001F64C\U0001F3FB"
+    - conditions:
+      - condition: trigger
+        id:
+        - Ausgelöst
+      sequence:
+      - service: notify.notify
+        data:
+          title: Sicherheitssystem
+          message: "Achtung! Der Alarm wurde ausgelöst! \U0001F6A8"
+  mode: single
+- id: '1689878818090'
+  alias: States - Trockner
+  description: ''
+  use_blueprint:
+    path: leofabri/appliance-status-monitor.yaml
+    input:
+      appliance_socket: switch.trockner
+      appliance_power_sensor: sensor.trockner_power
+      appliance_starting_power_threshold: 100
+      appliance_finishing_power_threshold: 5
+      appliance_state_machine: input_select.trockner_state_machine
+      appliance_job_cycle: input_boolean.trockner_job_cycle
+      delayed_job_completion_timer: timer.trockner_delayed_job_completion_timer
+      automation_self_trigger: input_boolean.waschmaschine_automation_self_trigger
+      actions_job_cycle_ends:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          message: Der Trockner ist fertig.
+          title: "Sweet Home \U0001F3E1"
+- id: '1689879925570'
+  alias: States - Waschmaschine
+  description: ''
+  use_blueprint:
+    path: leofabri/appliance-status-monitor.yaml
+    input:
+      appliance_socket: switch.waschmaschine
+      appliance_power_sensor: sensor.waschmaschine_power
+      appliance_starting_power_threshold: 30
+      appliance_finishing_power_threshold: 2
+      appliance_state_machine: input_select.waschmaschine_state_machine
+      appliance_job_cycle: input_boolean.waschmaschine_job_cycle
+      delayed_job_completion_timer: timer.waschmaschine_delayed_job_completion_timer
+      automation_self_trigger: input_boolean.waschmaschine_automation_self_trigger
+      actions_job_cycle_ends:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          title: "Sweet Home \U0001F3E1"
+          message: Die Waschmaschine ist fertig!
+      delayed_job_completion_duration: 90
+- id: '1689880187428'
+  alias: States - Geschirrspühler
+  description: ''
+  use_blueprint:
+    path: leofabri/appliance-status-monitor.yaml
+    input:
+      appliance_socket: switch.geschirrspueler
+      appliance_power_sensor: sensor.geschirrspueler_power
+      appliance_starting_power_threshold: 45
+      appliance_state_machine: input_select.geschirrspuehler_state_machine
+      appliance_job_cycle: input_boolean.geschirrspuehler_job_cycle
+      delayed_job_completion_timer: timer.geschirrspuehler_delayed_job_completion_timer
+      automation_self_trigger: input_boolean.geschirrspuehler_automation_self_trigger
+      actions_job_cycle_ends:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          title: "Sweet Home \U0001F3E1"
+          message: Der Geschirrspühler ist fertig!
+      delayed_job_completion_duration: 702
+      appliance_finishing_power_threshold: 2
+- id: '1689950884736'
+  alias: Notification - Heizung ausgefallen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.boiler_locking
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    from: Keine Störung
+  condition: []
+  action:
+  - if:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: sensor.boiler_locking
+        state: Keine Störung
+    then:
+    - service: notify.mobile_app_christians_iphone
+      data:
+        message: Die Heizung ist ausgefallen!
+        title: "Sweet Home \U0001F3E1"
+        data:
+          actions:
+          - action: Heizung_reset
+            title: Heizung reset
+            icon: mdi:restart
+    else:
+    - service: notify.mobile_app_christians_iphone
+      data:
+        title: "Sweet Home \U0001F3E1"
+        message: Die Heizung läuft wieder!
+  mode: single
+- id: '1689951494669'
+  alias: Licht - Terrasse Sonnenuntergang
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 0
+    id: Sonnenuntergang
+  - platform: time
+    at: 00:00:00
+    id: 0 Uhr
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Sonnenuntergang
+      sequence:
+      - type: turn_on
+        device_id: 64d50194e3b193a20bfe154775cb4077
+        entity_id: eacc108d5b64af3252ae9e6ab6e996e5
+        domain: light
+        brightness_pct: 25
+      - type: turn_on
+        device_id: f4815c5c151df0711edca3935e446055
+        entity_id: f9da9ba0761d40bbcdf48780533add98
+        domain: light
+        brightness_pct: 80
+    - conditions:
+      - condition: trigger
+        id:
+        - 0 Uhr
+      sequence:
+      - type: turn_off
+        device_id: 64d50194e3b193a20bfe154775cb4077
+        entity_id: eacc108d5b64af3252ae9e6ab6e996e5
+        domain: light
+      - type: turn_off
+        device_id: f4815c5c151df0711edca3935e446055
+        entity_id: f9da9ba0761d40bbcdf48780533add98
+        domain: light
+      - type: turn_off
+        device_id: aeb95c0bbf647a2159cdc90d02f80fcc
+        entity_id: 3205dd9bcd0efa2bc13b5bcba721bcec
+        domain: light
+  mode: single
+- id: '1690218603223'
+  alias: Backup - Full - Every Night
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:03:00
+  condition: []
+  action:
+  - service: auto_backup.backup_full
+    data:
+      keep_days: 7
+      location: Synology_NAS
+  mode: single
+- id: '1690222525818'
+  alias: Notification - Battery Level low
+  description: Tägliche Übersicht wenn low level Batteries erkannt wurden
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      actions:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          title: Batteriewarnung
+          message: 'Gerät(e) mit geringer Batterie erkannt: {{sensors}}'
+      exclude:
+        entity_id:
+        - sensor.christians_iphone_battery_level
+        - sensor.christians_ipad_battery_level
+        - sensor.macbook_pro_internal_battery_level
+- id: '1690228220678'
+  alias: Notification - Fenster/Tür geöffnet
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.fenster_zuletzt_geoffnet
+    id: fenster
+    from:
+    to:
+  - platform: state
+    entity_id:
+    - sensor.tur_zuletzt_geoffnet
+    id: tür
+    from:
+    to:
+  condition:
+  - condition: state
+    entity_id: person.christian
+    state: not_home
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - fenster
+    then:
+    - service: notify.notify
+      data:
+        title: Sicherheitssystem
+        message: 'Achtung! Folgendes Fenster wurde geöffnet: {{states(''sensor.fenster_zuletzt_geoffnet'')}}'
+  - if:
+    - condition: trigger
+      id:
+      - tür
+    then:
+    - service: notify.notify
+      data:
+        title: Sicherheitssystem
+        message: 'Achtung! Folgende Tür wurde geöffnet: {{states(''sensor.tur_zuletzt_geoffnet'')}}'
+  mode: single
+- id: '1690543145284'
+  alias: Licht - Büro
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.anwesenheit_sensoren_buro
+      light_switch:
+        entity_id: scene.buro_tag
+      end_scenes:
+      - scene.buro_alles_aus
+      time_delay: 1.5
+      include_bypass: bypass_enabled_turn_on
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.buro_bewegungsmelder_illuminance_lux
+      ambient_light_options: ambient_light_option_enabled
+      ambient_light_value: 10
+      include_night_lights: night_lights_enabled
+      night_lights:
+        entity_id: scene.buro_nacht
+      night_time_delay: 0.5
+      night_lights_conditions:
+      - time_enabled
+      night_lights_after_time: '23:00:00'
+      night_lights_before_time: 07:00:00
+      include_light_control:
+      - use_transition
+      - use_colour_temperature
+      include_night_light_control:
+      - use_transition
+      light_transition_on: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+      light_transition_off: 0.6
+      motion_bypass: input_boolean.licht_buro_bypass
+- id: '1691157592844'
+  alias: Licht - HSW Hue Tap
+  description: ''
+  use_blueprint:
+    path: svh1985/z2m-philips-hue-tap-switch.yaml
+    input:
+      dimmer: sensor.waschkueche_schalter_action
+      button_1:
+      - type: toggle
+        device_id: 509d68c8a49eda8556ec96ed8bdb487a
+        entity_id: e5044675b338f2d1b886ad9185b6e6a2
+        domain: switch
+      button_4:
+      - type: toggle
+        device_id: 509d68c8a49eda8556ec96ed8bdb487a
+        entity_id: e5044675b338f2d1b886ad9185b6e6a2
+        domain: switch
+      button_2:
+      - type: toggle
+        device_id: c7e82181252e0c13bc1d6926ec17b000
+        entity_id: 32b7a347b971b25486bea3c6c699aa5e
+        domain: light
+      button_3:
+      - type: toggle
+        device_id: 4ef3b85f601b5354cc6762f0a80cd460
+        entity_id: acfad3aa2375825c0301122013e449b4
+        domain: switch
+- id: '1691158197663'
+  alias: Licht - HSW wenn Tür auf
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: d08f9dada4e1f602315bcf7e5580c4ee
+    entity_id: 9c1abbaf274f68a3fc561bffc4089874
+    domain: binary_sensor
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - type: turn_on
+    device_id: 509d68c8a49eda8556ec96ed8bdb487a
+    entity_id: e5044675b338f2d1b886ad9185b6e6a2
+    domain: switch
+  mode: single
+- id: '1691158909569'
+  alias: Licht - Auffahrt
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.auffahrt_bewegungsmelder_occupancy
+      light_switch:
+        entity_id: light.auffahrt_licht
+      time_delay: 0.75
+      motion_bypass: binary_sensor.auffahrt_etwas_auf
+      include_bypass: bypass_enabled_turn_on
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.auffahrt_bewegungsmelder_illuminance_lux
+      ambient_light_options: ambient_light_option_disabled
+      ambient_light_value: 35
+      bypass_time_delay: 0.75
+      night_lights_conditions: []
+- id: '1691166473313'
+  alias: Licht - Wohnzimmer BWM
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.wohnzimmer_bmw_bewegung
+      light_switch:
+        entity_id: scene.wohnzimmer_abends_standart
+      end_scenes:
+      - scene.wohnzimmer_alles_aus
+      time_delay: 1.5
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.wohnzimmer_bmw_beleuchtungsstarke
+      ambient_light_options: ambient_light_option_enabled
+      ambient_light_value: 10
+      motion_bypass: input_boolean.licht_wohnzimmer_bypass
+      include_bypass: bypass_enabled_turn_on
+      include_bypass_auto_off: bypass_auto_off_disabled
+      light_transition_on: 0.6
+      light_transition_off: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+      include_light_control:
+      - use_transition
+- id: '1691242530952'
+  alias: Roku - Harmony Hub Tasten
+  description: ''
+  trigger:
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Left
+    id: Left
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Right
+    id: Right
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Back
+    id: Back
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: BackSpace
+    id: BackSpace
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Rev
+    id: Rev
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Fwd
+    id: Fwd
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Down
+    id: Down
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Up
+    id: Up
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Play
+    id: Play
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Info
+    id: Info
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Left
+      sequence:
+      - type: turn_on
+        device_id: de7197e94a0d1bef2ec930ea9c234e31
+        entity_id: d505cf6ac79696588bc59e7e8779c3a4
+        domain: light
+        brightness_pct: 25
+    - conditions:
+      - condition: trigger
+        id:
+        - Right
+      sequence:
+      - type: turn_off
+        device_id: de7197e94a0d1bef2ec930ea9c234e31
+        entity_id: d505cf6ac79696588bc59e7e8779c3a4
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - Back
+      sequence:
+      - type: turn_on
+        device_id: 5dd52aca928925cdcbb25506b63c1eb8
+        entity_id: 8ecfdad40bfa5e0746ce55ca0c37d73b
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - BackSpace
+      sequence:
+      - type: turn_off
+        device_id: 5dd52aca928925cdcbb25506b63c1eb8
+        entity_id: 8ecfdad40bfa5e0746ce55ca0c37d73b
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - Rev
+      sequence:
+      - type: turn_on
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
+        brightness_pct: 15
+    - conditions:
+      - condition: trigger
+        id:
+        - Fwd
+      sequence:
+      - type: turn_off
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - Down
+      sequence:
+      - service: media_player.turn_on
+        data: {}
+        target:
+          device_id: 3c188dd62678660180b3c7fbe72fa0b5
+    - conditions:
+      - condition: trigger
+        id:
+        - Up
+      sequence:
+      - service: media_player.turn_off
+        data: {}
+        target:
+          device_id: 3c188dd62678660180b3c7fbe72fa0b5
+    - conditions:
+      - condition: trigger
+        id:
+        - Play
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_on
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: de7197e94a0d1bef2ec930ea9c234e31
+          domain: light
+          entity_id: d505cf6ac79696588bc59e7e8779c3a4
+          type: brightness_increase
+        - device_id: 279ef68ea0c5a74e292f44af7f332043
+          domain: light
+          entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+          type: brightness_increase
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_off
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: de7197e94a0d1bef2ec930ea9c234e31
+          domain: light
+          entity_id: d505cf6ac79696588bc59e7e8779c3a4
+          type: brightness_increase
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_off
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_on
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: 279ef68ea0c5a74e292f44af7f332043
+          domain: light
+          entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+          type: brightness_increase
+    - conditions:
+      - condition: trigger
+        id:
+        - Info
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_on
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: de7197e94a0d1bef2ec930ea9c234e31
+          domain: light
+          entity_id: d505cf6ac79696588bc59e7e8779c3a4
+          type: brightness_decrease
+        - device_id: 279ef68ea0c5a74e292f44af7f332043
+          domain: light
+          entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+          type: brightness_decrease
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_off
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: de7197e94a0d1bef2ec930ea9c234e31
+          domain: light
+          entity_id: d505cf6ac79696588bc59e7e8779c3a4
+          type: brightness_decrease
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_off
+            device_id: de7197e94a0d1bef2ec930ea9c234e31
+            entity_id: d505cf6ac79696588bc59e7e8779c3a4
+            domain: light
+          - condition: device
+            type: is_on
+            device_id: 279ef68ea0c5a74e292f44af7f332043
+            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            domain: light
+        then:
+        - device_id: 279ef68ea0c5a74e292f44af7f332043
+          domain: light
+          entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+          type: brightness_decrease
+  mode: single
+- id: '1691246057609'
+  alias: Licht - Wohnzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - remote.harmony_hub
+    id: Harmony
+  - platform: state
+    entity_id:
+    - sensor.wohnzimmer_bmw_beleuchtungsstarke
+    id: Lichtsensor
+  - platform: state
+    entity_id:
+    - media_player.tv_samsung_led55
+    from:
+    id: TV
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Harmony
+        - TV
+      - condition: state
+        entity_id: media_player.tv_samsung_led55
+        state: 'on'
+      sequence:
+      - type: turn_on
+        device_id: 5dd52aca928925cdcbb25506b63c1eb8
+        entity_id: 8ecfdad40bfa5e0746ce55ca0c37d73b
+        domain: light
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.licht_wohnzimmer_bypass
+      - if:
+        - condition: sun
+          before: sunrise
+          after: sunset
+        then:
+        - service: scene.turn_on
+          data: {}
+          target:
+            entity_id: scene.wohnzimmer_abends_tv
+    - conditions:
+      - condition: trigger
+        id:
+        - Harmony
+        - TV
+      - condition: state
+        entity_id: media_player.tv_samsung_led55
+        state: 'off'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.licht_wohnzimmer_bypass
+      - if:
+        - condition: numeric_state
+          entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+          above: 10
+        then:
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 15
+            milliseconds: 0
+        - service: scene.turn_on
+          data: {}
+          target:
+            entity_id: scene.wohnzimmer_alles_aus
+    - conditions:
+      - condition: trigger
+        id:
+        - Lichtsensor
+      - condition: numeric_state
+        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+        above: 0.4
+      - condition: sun
+        before: sunset
+        after: sunrise
+      - condition: state
+        entity_id: media_player.tv_samsung_led55
+        state: 'on'
+      sequence:
+      - type: turn_off
+        device_id: c63362514c42d9112b345678b7bb22c4
+        entity_id: fb568fd70ae4c6d19f9ac33a799a0820
+        domain: light
+      - type: turn_off
+        device_id: de7197e94a0d1bef2ec930ea9c234e31
+        entity_id: d505cf6ac79696588bc59e7e8779c3a4
+        domain: light
+      - type: turn_off
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - Lichtsensor
+      - condition: numeric_state
+        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+        below: 0.4
+      - condition: sun
+        before: sunset
+        after: sunrise
+      - condition: state
+        entity_id: media_player.tv_samsung_led55
+        state: 'on'
+      sequence:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.wohnzimmer_abends_tv
+        metadata: {}
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.licht_wohnzimmer_bypass
+  mode: single
+- id: '1691254885537'
+  alias: Licht - Küche - Schalter
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: bfa03b529527c661ef264625ca77e5e3
+    entity_id: 5da488ca0136264de0f413952e730864
+    domain: light
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_on
+      device_id: bfa03b529527c661ef264625ca77e5e3
+      entity_id: 5da488ca0136264de0f413952e730864
+      domain: light
+    then:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.licht_kuche_bypass
+    - service: scene.turn_on
+      target:
+        entity_id: scene.kuche_tag
+      metadata: {}
+    else:
+    - if:
+      - condition: state
+        entity_id: binary_sensor.anwesenheit_sensoren_kuche
+        state: 'on'
+      then:
+      - wait_for_trigger:
+        - platform: state
+          entity_id:
+          - binary_sensor.anwesenheit_sensoren_kuche
+          from: 'on'
+          to: 'off'
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 15
+        milliseconds: 0
+    - service: scene.turn_on
+      target:
+        entity_id: scene.kuche_aus
+      metadata: {}
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.licht_kuche_bypass
+  mode: single
+- id: '1691346643021'
+  alias: Licht - Wohnzimmer PS Ambilight
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+    domain: select
+    entity_id: 4e3732e26b909cd4f35b796301def542
+    type: current_option_changed
+  - platform: state
+    entity_id:
+    - sensor.wohnzimmer_bmw_beleuchtungsstarke
+  - platform: state
+    entity_id:
+    - media_player.tv_samsung_led55
+  condition: []
+  action:
+  - if:
+    - condition: and
+      conditions:
+      - condition: numeric_state
+        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+        below: 0.5
+      - condition: state
+        entity_id: media_player.tv_samsung_led55
+        state: 'on'
+    then:
+    - type: turn_on
+      device_id: 279ef68ea0c5a74e292f44af7f332043
+      entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+      domain: light
+      brightness_pct: 15
+    else:
+    - type: turn_off
+      device_id: 279ef68ea0c5a74e292f44af7f332043
+      entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+      domain: light
+  mode: single
+- id: '1691347518564'
+  alias: Licht - Küche Taster
+  description: ''
+  trigger:
+  - platform: device
+    domain: homematicip_local
+    device_id: 10837ea5adf8ea7a790b10654350e9c3
+    event_type: homematic.keypress
+    address: 0019DBE98FACBB
+    device_type: HmIP-BRC2
+    interface_id: RaspberryMatic-HmIP-RF
+    type: press_short
+    subtype: 1
+    id: 1short
+  - platform: device
+    domain: homematicip_local
+    device_id: 10837ea5adf8ea7a790b10654350e9c3
+    event_type: homematic.keypress
+    address: 0019DBE98FACBB
+    device_type: HmIP-BRC2
+    interface_id: RaspberryMatic-HmIP-RF
+    type: press_long_start
+    subtype: 1
+    id: 1longstart
+  - platform: device
+    domain: homematicip_local
+    device_id: 10837ea5adf8ea7a790b10654350e9c3
+    event_type: homematic.keypress
+    address: 0019DBE98FACBB
+    device_type: HmIP-BRC2
+    interface_id: RaspberryMatic-HmIP-RF
+    type: press_long_start
+    subtype: 2
+    id: 2longstart
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 1short
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: device
+            type: is_off
+            device_id: 05584a982384dd3ebce9dc1f642d5af1
+            entity_id: a6fe265cafe99597f48ed90a5f69ded2
+            domain: light
+          - condition: device
+            type: is_off
+            device_id: 6bda2bf0734100841eb3c21bb8f47a72
+            entity_id: 34d30d9d2530a4b98f239d1cb464db38
+            domain: light
+        then:
+        - service: scene.turn_on
+          target:
+            entity_id: scene.kuche_tag
+          metadata: {}
+        else:
+        - service: scene.turn_on
+          target:
+            entity_id: scene.kuche_aus
+          metadata: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - 1longstart
+      sequence:
+      - device_id: 05584a982384dd3ebce9dc1f642d5af1
+        domain: light
+        entity_id: a6fe265cafe99597f48ed90a5f69ded2
+        type: brightness_decrease
+      - device_id: 6bda2bf0734100841eb3c21bb8f47a72
+        domain: light
+        entity_id: 34d30d9d2530a4b98f239d1cb464db38
+        type: brightness_decrease
+    - conditions:
+      - condition: trigger
+        id:
+        - 2longstart
+      sequence:
+      - device_id: 05584a982384dd3ebce9dc1f642d5af1
+        domain: light
+        entity_id: a6fe265cafe99597f48ed90a5f69ded2
+        type: brightness_increase
+      - device_id: 6bda2bf0734100841eb3c21bb8f47a72
+        domain: light
+        entity_id: 34d30d9d2530a4b98f239d1cb464db38
+        type: brightness_increase
+  mode: single
+- id: '1691519438302'
+  alias: Switchbot zurücksetzen
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 86652998001423c983613bdf47caa46f
+    entity_id: b4741af36235401c2dbf02c72f6b2099
+    domain: switch
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 4
+      milliseconds: 0
+  - type: turn_off
+    device_id: 86652998001423c983613bdf47caa46f
+    entity_id: b4741af36235401c2dbf02c72f6b2099
+    domain: switch
+  mode: single
+- id: '1691853001093'
+  alias: Licht - Flur OG BWM
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.flur_og_bewegungsmelder_occupancy
+      light_switch:
+        entity_id: scene.flur_og_tag
+      end_scenes:
+      - scene.flur_og_alles_aus
+      time_delay: 1.5
+      include_light_control:
+      - use_transition
+      include_bypass: bypass_enabled_turn_on
+      motion_bypass: input_boolean.licht_bypass_flur_og
+      ambient_light_sensor: sensor.flur_og_bewegungsmelder_illuminance_lux
+      ambient_light_value: 10
+      include_night_lights: night_lights_enabled
+      night_lights:
+        entity_id: scene.flur_og_nacht
+      night_time_delay: 0.5
+      include_night_light_control:
+      - use_transition
+      night_lights_conditions:
+      - time_enabled
+      night_lights_after_time: '23:00:00'
+      night_lights_before_time: 07:00:00
+      include_ambient: ambient_enabled
+      ambient_light_options: ambient_light_option_enabled
+      light_transition_on: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+      light_transition_off: 0.6
+- id: '1691853870855'
+  alias: Licht - Flur Sonnenuntergang
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '-15'
+  condition:
+  - condition: state
+    entity_id: person.christian
+    state: home
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.licht_bypass_flur_og
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.licht_bypass_flur_eg
+  mode: single
+- id: '1691854085278'
+  alias: Licht - Flur EG - Bypass reset
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.licht_flur_eg
+    from: 'on'
+    to: 'off'
+    id: Flur EG
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.licht_bypass_flur_eg
+  mode: single
+- id: '1691854740250'
+  alias: Licht - Flur EG BWM
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.flur_eg_bewegungsmelder_occupancy
+      end_scenes:
+      - scene.flur_eg_alles_aus
+      time_delay: 1.5
+      include_light_control:
+      - use_transition
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.flur_eg_bewegungsmelder_illuminance_lux
+      ambient_light_value: 4
+      ambient_light_options: ambient_light_option_enabled
+      light_switch:
+        entity_id: scene.flur_eg_tag
+      include_night_lights: night_lights_enabled
+      night_lights:
+        entity_id: scene.flur_eg_nacht
+      night_time_delay: 0.5
+      include_night_light_control:
+      - use_transition
+      night_lights_conditions:
+      - time_enabled
+      night_lights_after_time: '23:00:00'
+      motion_bypass: input_boolean.licht_bypass_flur_eg
+      include_bypass: bypass_enabled_turn_on
+      light_transition_off: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+      light_transition_on: 0.6
+- id: '1691856116897'
+  alias: Licht - Flur EG Treppe
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.sensoren_bwm_flur
+      light_switch:
+        entity_id: scene.flur_eg_treppe_tag
+      end_scenes:
+      - scene.flur_eg_treppe_aus
+      time_delay: 1.5
+      include_light_control:
+      - use_transition
+      include_bypass: bypass_enabled_turn_on
+      motion_bypass: input_boolean.licht_bypass_flur_eg
+      include_ambient: ambient_enabled
+      ambient_light_sensor: sensor.flur_eg_bewegungsmelder_illuminance_lux
+      ambient_light_value: 6
+      include_night_lights: night_lights_enabled
+      night_lights:
+        entity_id: scene.flur_eg_treppe_nacht
+      night_time_delay: 0.5
+      include_night_light_control:
+      - use_transition
+      night_lights_conditions:
+      - time_enabled
+      night_lights_after_time: '23:00:00'
+      night_lights_before_time: 07:00:00
+      light_transition_on: 0.6
+      light_transition_off: 0.6
+      night_light_transition_on: 0.6
+      night_light_transition_off: 0.6
+- id: '1691923904753'
+  alias: Alarmanlage - Auslösen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.offene_tueren
+    - sensor.offene_fenster
+    id: Tür & Fenster
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.safe_alarm_panel
+      state: armed_home
+    - condition: state
+      entity_id: alarm_control_panel.safe_alarm_panel
+      state: armed_night
+    - condition: state
+      entity_id: alarm_control_panel.safe_alarm_panel
+      state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    data: {}
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  mode: single
+- id: '1691940111950'
+  alias: Alarmanlage - Auslösen BWM
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.sensoren_bwm_innen
+    id: Tür & Fenster
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.safe_alarm_panel
+      state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    data: {}
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  mode: single
+- id: '1691941068316'
+  alias: Alarmanlage - Ausgelöst
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.home_alarm
+    to: triggered
+    id: Ausgelöst
+  - platform: state
+    entity_id:
+    - alarm_control_panel.home_alarm
+    to:
+    id: Deaktiviert
+    from: triggered
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Ausgelöst
+      sequence:
+      - service: siren.turn_on
+        data:
+          tone: FREQUENCY_RISING_AND_FALLING
+          duration: '300'
+        target:
+          device_id: 5b3ef66a2d02c587d905c6414d48d1cc
+    - conditions:
+      - condition: trigger
+        id:
+        - Deaktiviert
+      sequence:
+      - service: siren.turn_off
+        target:
+          device_id:
+          - 5b3ef66a2d02c587d905c6414d48d1cc
+        data: {}
+  mode: single
+- id: '1692485646205'
+  alias: iPhone Nachtzeit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.christians_iphone_battery_state
+    from: Not Charging
+    to: Charging
+  condition:
+  - condition: time
+    after: '21:00:00'
+    before: 05:00:00
+  - condition: state
+    entity_id: person.christian
+    state: home
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.schlafenszeit
+    metadata: {}
+  - service: alarm_control_panel.alarm_arm_night
+    data: {}
+    target:
+      entity_id: alarm_control_panel.safe_alarm_panel
+  - service: lock.lock
+    data: {}
+    target:
+      entity_id: lock.haustur
+  mode: single
+- id: '1694025226752'
+  alias: Licht - Gästezimmer - Hue Button
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 4334924b5a39ee1025600c1eb6f30bdc
+    type: action
+    subtype: press
+    discovery_id: 0x0017880106077a17 action_press
+  condition: []
+  action:
+  - type: toggle
+    device_id: c27b1c795ced08c4c425b2344a258833
+    entity_id: 9860d410297b32819e56527e2a8515b9
+    domain: light
+  mode: single
+- id: '1694034376577'
+  alias: Alarmanlage - iPhone Focus aus
+  description: ''
+  trigger:
+  - type: turned_off
+    platform: device
+    device_id: 8c8704041f95b4a801662374c49fc21f
+    entity_id: 69afbd5258a7aaf849c0e1c772c06031
+    domain: binary_sensor
+  condition:
+  - condition: zone
+    entity_id: person.christian
+    zone: zone.home
+  action:
+  - service: alarm_control_panel.alarm_disarm
+    data: {}
+    target:
+      entity_id: alarm_control_panel.safe_alarm_panel
+  mode: single
+- id: '1694190883186'
+  alias: Licht - Garage
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.garage_sensoren_licht
+      light_switch:
+        entity_id: switch.garagenlicht
+      time_delay: 0.75
+- id: '1694645248760'
+  alias: Notification - Saugroboter fertig
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.roborock_s7
+    from: cleaning
+    to: returning
+    id: Robbi
+  - platform: state
+    entity_id:
+    - vacuum.viomi_v8_1e11_robot_cleaner
+    from: cleaning
+    to: returning
+    id: Schaumi
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Robbi
+      sequence:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          title: "Sweet Home \U0001F3E1"
+          message: Erdgeschoss gereinigt. Robbi fährt zurück zur Dockingststion.
+    - conditions:
+      - condition: trigger
+        id:
+        - Schaumi
+      sequence:
+      - service: notify.mobile_app_christians_iphone
+        data:
+          title: "Sweet Home \U0001F3E1"
+          message: Obergeschoss gereinigt. Schaumi fährt zurück zur Dockingststion.
+  mode: single
+- id: '1696672597427'
+  alias: States - Robbi Entleeren
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.robbi_goto_entleeren
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: vacuum.roborock_s7
+      state: docked
+    then:
+    - service: roborock.vacuum_goto
+      data:
+        x_coord: '24800'
+        y_coord: '27500'
+    else:
+    - device_id: 79fd01e9b0d0e223fdfb3cbfc54a8531
+      domain: vacuum
+      entity_id: 4b07570880c15232354030e146cbc9ac
+      type: dock
+  mode: single
+- id: '1699296982004'
+  alias: Notification - Heizung_Reset Action
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: Heizung_reset
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.bot_3144
+  mode: single
+- id: '1699487323096'
+  alias: Licht - Flur OG - Bypass reset
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.licht_flur_og
+    from: 'on'
+    to: 'off'
+    id: Flur OG
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.licht_bypass_flur_og
+  mode: single
+- id: '1701288570316'
+  alias: Notification - Frostmeldung Petkum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.eiswarnung_petkum
+    from:
+    to:
+  condition: []
+  action:
+  - service: notify.mobile_app_christians_iphone
+    data:
+      title: "Sweet Home \U0001F3E1"
+      message: 'Frostmeldung Petkum: {{ states(''sensor.eiswarnung_petkum'') }}'
+  mode: single
+- id: '1701329727014'
+  alias: States - Harmony Hub Activities
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - select.harmony_hub_activities
+    from:
+    id: Harmony Hub
+  - platform: state
+    entity_id:
+    - input_select.harmony_hub
+    from:
+    id: Harmony Hub Helper
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Harmony Hub
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: "{% if is_state(\"select.harmony_hub_activities\", \"power_off\")
+            -%}\n  {{\"Ausschalten\"}}\n{%- else -%}\n {{states('select.harmony_hub_activities')}}\n{%-
+            endif %}"
+        target:
+          entity_id: input_select.harmony_hub
+    - conditions:
+      - condition: trigger
+        id:
+        - Harmony Hub Helper
+      sequence:
+      - service: select.select_option
+        data:
+          option: "{% if is_state(\"input_select.harmony_hub\", \"Ausschalten\") -%}\n
+            \ {{\"power_off\"}}\n{%- else -%}\n {{ states('input_select.harmony_hub')
+            }}\n{%- endif %}"
+        target:
+          entity_id: select.harmony_hub_activities
+  mode: single
+- id: '1701431072804'
+  alias: Licht - Außen Weihnachtsbeleuchtung
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '-10'
+    id: Sonnenuntergang
+  - platform: time
+    at: 00:00:00
+    id: 0 Uhr
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Sonnenuntergang
+      sequence:
+      - type: turn_on
+        device_id: d605beada98e90ead1687777cdcbdf4c
+        entity_id: c492a11a23de222c1f95d588d5ba2cc0
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - 0 Uhr
+      sequence:
+      - type: turn_off
+        device_id: d605beada98e90ead1687777cdcbdf4c
+        entity_id: c492a11a23de222c1f95d588d5ba2cc0
+        domain: switch
+  mode: single
+- id: '1702407520076'
+  alias: Licht - Büro - Bypass reset
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.licht_buro
+    from: 'on'
+    to: 'off'
+    id: Büro
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.licht_buro_bypass
+  mode: single
+- id: '1703334058878'
+  alias: Strom - Automatische Preisänderung
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.strom_preisanderungsdatum
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.strompreis
+    data:
+      value: '{{ states(''input_number.strom_neuer_preis_kwh'') | float }}'
+    enabled: true
+  - service: notify.christian_iphone
+    data:
+      message: 'Strompreis wurde angepasst. Neuer Preis: {{ states(''input_number.strom_neuer_preis_kwh'')
+        | float }} €'
+      title: "Sweet Home \U0001F3E1"
+  mode: single
+- id: '1703495288851'
+  alias: Gas - Automatische Preisänderung
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.gas_preisanderungsdatum
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.gaspreis
+    data:
+      value: '{{ states(''input_number.gas_neuer_preis_kwh'') | float }}'
+    enabled: true
+  - service: notify.christian_iphone
+    data:
+      message: 'Gaspreis wurde angepasst. Neuer Preis: {{ states(''input_number.gas_neuer_preis_kwh'')
+        | float }} €'
+      title: "Sweet Home \U0001F3E1"
+  mode: single
+- id: '1704407603348'
+  alias: Heizung reset - Automatik
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.boiler_locking
+    from:
+    to: 5x Flamme aus
+  condition: []
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.bot_3144
+  mode: single
+- id: '1707410839936'
+  alias: States - Denon AVR
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.home_theater
+    id: Denon AVR
+  - platform: state
+    entity_id:
+    - input_select.denon_avr_input
+    from:
+    id: Denon Helper
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Denon AVR
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: "{% if is_state(\"media_player.home_theater\", \"off\") -%}\n  {{\"Ausschalten\"}}\n{%-
+            else -%}\n {{state_attr(\"media_player.home_theater\", 'source')}}\n{%-
+            endif %}"
+        target:
+          entity_id: input_select.denon_avr_input
+    - conditions:
+      - condition: trigger
+        id:
+        - Denon Helper
+      sequence:
+      - service: media_player.select_source
+        data:
+          source: '{{ states(''input_select.denon_avr_input'') }}'
+        target:
+          entity_id: media_player.home_theater
+      - if:
+        - condition: state
+          entity_id: input_select.denon_avr_input
+          state: Ausschalten
+        then:
+        - service: media_player.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: media_player.home_theater
+  mode: single
+- id: '1707690408959'
+  alias: Licht - Aufwachen Arbeit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.christians_iphone_focus
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: zone
+    entity_id: person.christian
+    zone: zone.home
+  - condition: template
+    value_template: '{{ ''Arbeit'' in state_attr(''calendar.schichtplan'', ''message'')
+      }}'
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - type: turn_on
+    device_id: c27b1c795ced08c4c425b2344a258833
+    entity_id: aa7173183dc864112e9fa215fd691505
+    domain: switch
+  mode: single
