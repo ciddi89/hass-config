@@ -2,7 +2,7 @@
 sources:
   - name: ics
     args:
-      file: "www/abfuhrkalender.ics"
+      url: https://www.bee-emden.de/abfall/entsorgungssystem/abfuhrkalender/ics/petkum-uphusen-tholenswehr-marienwehr/abfuhrkalender.ics
     customize:
       - type: Grau,Gelb
         alias: Restmüll und Plastik
