@@ -1,0 +1,6 @@
+# Allow nginx to reach hass
+use_x_forwarded_for: true
+ip_ban_enabled: true
+login_attempts_threshold: 3
+trusted_proxies:
+  - 172.20.50.200

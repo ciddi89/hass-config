@@ -1,0 +1,17 @@
+# Müllkalender
+sources:
+  - name: ics
+    args:
+      file: "www/abfuhrkalender.ics"
+    customize:
+      - type: Grau,Gelb
+        alias: Restmüll und Plastik
+        icon: mdi:trash-can-outline
+      - type: Grau,Gelb,Blau
+        alias: Restmüll, Plastik und Papier
+        icon: mdi:newspaper
+      - type: Grau,Gelb,Blau,Christbäume
+        alias: Restmüll, Plastik, Papier und Christbäume
+        icon: mdi:trash-can-outline
+fetch_time: "04:00"
+day_switch_time: "11:00"

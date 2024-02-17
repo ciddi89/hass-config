@@ -1,0 +1,61 @@
+sensor:
+  - state_topic: boiler/status
+    name: "Boiler status"
+    unique_id: boiler_status
+  - state_topic: boiler/substatus
+    name: "Boiler substatus"
+    unique_id: boiler_substatus
+  - state_topic: boiler/outside_temp
+    name: "Boiler outside temperatur"
+    unique_id: boiler_outsideTemp
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/room_temp
+    name: "Boiler room temperatur"
+    unique_id: boiler_roomTemp
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/flow_temp
+    name: "Boiler flow temperatur"
+    unique_id: boiler_flow_temp
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/cv_setpoint
+    name: "Boiler cv setpoint temperatur"
+    unique_id: boiler_cv_setpoint
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/return_temp
+    name: "Boiler return temperatur"
+    unique_id: boiler_return_temp
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/calorifier_temp
+    name: "Boiler calorifier temperatur"
+    unique_id: boiler_calorifier_temp
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/airflow_actual
+    name: "Boiler airflow actual"
+    unique_id: boiler_airflow_actual
+  - state_topic: boiler/actual_power
+    name: "Boiler actual power"
+    unique_id: boiler_actual_power
+  - state_topic: boiler/room_setpoint
+    name: "Boiler room setpoint temperatur"
+    unique_id: boiler_room_setpoint
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - state_topic: boiler/locking
+    name: "Boiler locking"
+    unique_id: boiler_locking
+  - state_topic: boiler/blocking
+    name: "Boiler blocking"
+    unique_id: boiler_blocking
+  - state_topic: boiler/mode
+    name: "Boiler mode"
+    unique_id: boiler_mode
+  - state_topic: boiler/status_burning_dhw_duration
+    name: "Boiler status_burning_dhw_duration"
+    unique_id: boiler_status_burning_dhw_duration
+    device_class: "duration"

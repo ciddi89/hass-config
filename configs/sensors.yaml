@@ -1,0 +1,79 @@
+# Abfallkalender
+- platform: waste_collection_schedule
+  name: Restmüll und Plastik
+  details_format: "upcoming"
+  value_template: "{{value.daysTo}}"
+  types:
+    - Restmüll und Plastik
+
+- platform: waste_collection_schedule
+  name: Restmüll, Plastik und Papier
+  details_format: "upcoming"
+  value_template: "{{value.daysTo}}"
+  types:
+    - Restmüll, Plastik und Papier
+
+- platform: waste_collection_schedule
+  name: Restmüll, Plastik, Papier und Christbäume
+  details_format: "upcoming"
+  value_template: "{{value.daysTo}}"
+  types:
+    - Restmüll, Plastik, Papier und Christbäume
+
+# mqtt ESPresence
+- platform: mqtt_room
+  device_id: "apple:1007:11-6"
+  name: "Christian iPhone"
+  state_topic: "espresense/devices/apple:1007:11-6"
+  timeout: 20
+  away_timeout: 120
+- platform: mqtt_room
+  device_id: "apple:1005:9-9"
+  name: "Christian iWatch"
+  state_topic: "espresense/devices/apple:1005:9-9"
+  timeout: 20
+  away_timeout: 120
+
+# Sensor für Eiswarner
+- platform: rest
+  scan_interval: 7200
+  name: eiswarnung_petkum
+  resource: https://api.eiswarnung.de?key=62c71d92e1655c491270bef7b27ec2aa&lat=53.33&lng=7.27
+  json_attributes:
+    - success
+    - message
+    - callsLeft
+    - callsDailyLimit
+    - callsResetInSeconds
+    - result
+  value_template: "{{ value_json.result.forecastText }}"
+
+# Sensor für Eiswarner
+- platform: rest
+  scan_interval: 7200
+  name: eiswarnung_emden
+  resource: https://api.eiswarnung.de?key=1cdc2a9d08bef510165bae122775f675&lat=53.37&lng=7.21
+  json_attributes:
+    - success
+    - message
+    - callsLeft
+    - callsDailyLimit
+    - callsResetInSeconds
+    - result
+  value_template: "{{ value_json.result.forecastText }}"
+
+#Unifi gateway
+- platform: unifigateway
+  host: 172.20.30.1
+  port: 443
+  version: UDMP-unifiOS
+  verify_ssl: false
+  username: homeassistent
+  password: !secret unifipw
+  monitored_conditions:
+    - www
+    - wlan
+    - lan
+    - firmware
+    - wan
+    - vpn

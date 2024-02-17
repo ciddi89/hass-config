@@ -1,0 +1,20 @@
+# Schaumi Vacuum
+- platform: xiaomi_cloud_map_extractor
+  host: !secret xiaomi_vacuum_host_schaumi
+  token: !secret xiaomi_vacuum_token_schaumi
+  username: !secret xiaomi_cloud_username
+  password: !secret xiaomi_cloud_password
+  country: "de"
+  name: "Schaumi Karte"
+  draw: ["all"]
+  attributes:
+    - calibration_points
+  colors:
+    color_map_outside: [0, 0, 0, 0.0]
+  map_transformation:
+    scale: 1
+    trim:
+      top: 40
+      bottom: 15
+      left: 40
+      right: 15
