@@ -287,6 +287,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -294,7 +295,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 38
         hue: 38
@@ -324,9 +324,9 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      effect:
       color_mode:
       brightness:
-      effect:
       friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
       state: 'off'
@@ -349,6 +349,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -356,7 +357,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 17
         hue: 17
@@ -365,8 +365,8 @@
         x: 0.5637
         y: 0.39
       color_temp_startup: 65535
-      last_seen: '2024-01-27T22:53:40+00:00'
-      linkquality: 127
+      last_seen: '2024-02-17T23:06:07+00:00'
+      linkquality: 58
       power_on_behavior: previous
       update:
         installed_version: 16786948
@@ -404,6 +404,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -411,7 +412,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 40
         hue: 40
@@ -419,8 +419,8 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-01-27T22:59:51+00:00'
-      linkquality: 69
+      last_seen: '2024-02-17T23:00:19+00:00'
+      linkquality: 91
       power_on_behavior: previous
       update:
         installed_version: 16782594
@@ -449,6 +449,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -456,7 +457,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 40
         hue: 40
@@ -464,8 +464,8 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-01-27T22:59:51+00:00'
-      linkquality: 127
+      last_seen: '2024-02-17T23:00:17+00:00'
+      linkquality: 91
       power_on_behavior: previous
       update:
         installed_version: 16782594
@@ -503,6 +503,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -510,7 +511,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 36
         hue: 36
@@ -518,8 +518,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-01-27T22:59:55+00:00'
-      linkquality: 131
+      last_seen: '2024-02-17T23:04:24+00:00'
+      linkquality: 58
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -548,6 +548,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -555,7 +556,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 40
         hue: 40
@@ -563,8 +563,8 @@
         saturation: 49
         x: 0.3804
         y: 0.3767
-      last_seen: '2024-01-27T22:59:55+00:00'
-      linkquality: 61
+      last_seen: '2024-02-17T22:59:27+00:00'
+      linkquality: 123
       power_on_behavior:
       update:
         installed_version: 16785412
@@ -574,9 +574,6 @@
       friendly_name: Flur EG Treppenbeleuchtung
       supported_features: 44
       state: 'off'
-    switch.flur_eg_steckdose:
-      friendly_name: Flur EG Steckdose
-      state: unavailable
     light.flur_og_leuchtkugel:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -596,6 +593,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -603,7 +601,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 36
         hue: 36
@@ -611,8 +608,8 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-01-27T22:59:55+00:00'
-      linkquality: 72
+      last_seen: '2024-02-17T22:59:29+00:00'
+      linkquality: 87
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -641,6 +638,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -648,7 +646,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 36
         hue: 36
@@ -656,8 +653,8 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-01-27T22:59:55+00:00'
-      linkquality: 65
+      last_seen: '2024-02-17T22:59:31+00:00'
+      linkquality: 69
       power_on_behavior: previous
       update:
         installed_version: 16785162
@@ -686,6 +683,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -693,7 +691,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 36
         hue: 36
@@ -701,8 +698,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-01-27T22:53:01+00:00'
-      linkquality: 72
+      last_seen: '2024-02-17T23:00:29+00:00'
+      linkquality: 76
       power_on_behavior:
       update:
         installed_version: 16782594
@@ -731,6 +728,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -738,7 +736,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       color:
         h: 36
         hue: 36
@@ -746,8 +743,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-01-27T22:55:16+00:00'
-      linkquality: 51
+      last_seen: '2024-02-17T22:58:53+00:00'
+      linkquality: 87
       power_on_behavior: previous
       update:
         installed_version: 16785162
@@ -769,9 +766,9 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      effect:
       color_mode:
       brightness:
-      effect:
       friendly_name: Büro Stehlampe
       supported_features: 44
       state: 'off'
@@ -786,8 +783,8 @@
       state: 'off'
     switch.gastezimmer_tischlampe:
       indicator_mode:
-      last_seen: '2024-01-27T22:59:55+00:00'
-      linkquality: 47
+      last_seen: '2024-02-17T22:59:25+00:00'
+      linkquality: 87
       power_on_behavior:
       friendly_name: Gästezimmer Tischlampe
       state: 'off'
@@ -813,28 +810,9 @@
       supported_color_modes:
       - color_temp
       - xy
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      rgb_color:
-      xy_color:
-      effect:
-      color:
-        h: 25
-        hue: 25
-        s: 95
-        saturation: 95
-        x: 0.5267
-        y: 0.4133
-      color_power_on_behavior: previous
-      do_not_disturb: true
-      last_seen: '2024-01-27T22:56:20+00:00'
-      linkquality: 40
       friendly_name: Terrasse Leuchtkugel
       supported_features: 44
-      state: 'off'
+      state: unavailable
     light.terrasse_spot:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -854,32 +832,9 @@
       supported_color_modes:
       - color_temp
       - xy
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      rgb_color:
-      xy_color:
-      effect:
-      color:
-        h: 38
-        hue: 38
-        s: 62
-        saturation: 62
-        x: 0.4042
-        y: 0.3902
-      last_seen: '2024-01-27T22:52:05+00:00'
-      linkquality: 61
-      power_on_behavior: previous
-      update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
-      update_available:
       friendly_name: Terrasse Spot
       supported_features: 44
-      state: 'off'
+      state: unavailable
     switch.terrasse_brunnen_taster_eg_wz_terr_brunnen_taster:
       interface_id: RaspberryMatic-HmIP-RF
       address: 00085BE98C2BA6:4
@@ -897,8 +852,10 @@
       effect_list:
       - ''
       - Accumulation
+      - Beauty
       - Birthday
       - Blossom
+      - Blue green
       - Bouncing Ball
       - Bubble
       - Candy
@@ -922,6 +879,9 @@
       - Journey of Flowers
       - Karst Cave
       - Lake
+      - 'Lava '
+      - Lava2
+      - Lava3
       - Leisure
       - Leisurely
       - Light
@@ -971,6 +931,7 @@
       supported_color_modes:
       - color_temp
       - rgb
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -978,9 +939,8 @@
       hs_color:
       rgb_color:
       xy_color:
-      effect:
       icon: mdi:floor-lamp
-      friendly_name: Flur Stehlampe
+      friendly_name: Flur EG Stehlampe
       supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
@@ -1004,8 +964,6 @@
     light.flur_eg_tischlampe:
       entity_only: true
     light.flur_eg_treppenbeleuchtung:
-      entity_only: true
-    switch.flur_eg_steckdose:
       entity_only: true
     light.flur_og_leuchtkugel:
       entity_only: true
@@ -1703,8 +1661,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-17T08:41:55+00:00'
-      linkquality: 87
+      last_seen: '2024-02-18T11:15:06+00:00'
+      linkquality: 83
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -1802,24 +1760,17 @@
       - color_temp
       - rgb
       effect:
-      color_mode: rgb
-      brightness: 26
+      color_mode:
+      brightness:
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 218.906
-      - 50.196
       rgb_color:
-      - 127
-      - 172
-      - 255
       xy_color:
-      - 0.208
-      - 0.217
       icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
       supported_features: 44
-      state: 'on'
+      state: 'off'
   icon: mdi:lightbulb-group-off-outline
   metadata:
     light.flur_stehlampe:
