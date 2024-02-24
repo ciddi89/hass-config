@@ -1894,3 +1894,26 @@
     entity_id: aa7173183dc864112e9fa215fd691505
     domain: switch
   mode: single
+- id: '1708710714314'
+  alias: Neue Automatisierung
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: notify.christian_iphone
+    metadata: {}
+    data:
+      data:
+        actions:
+        - action: ALARM
+          title: Sound Alarm
+        - action: URI
+          title: Open Url
+          uri: https://google.com
+      message: Test
+  mode: single

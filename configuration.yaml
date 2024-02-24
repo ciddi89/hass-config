@@ -32,3 +32,4 @@ mqtt: !include configs/mqtt.yaml
 notify: !include configs/notifies.yaml
 sensor: !include configs/sensors.yaml
 waste_collection_schedule: !include configs/waste_collection_schedule.yaml
+zone: !include configs/zones.yaml

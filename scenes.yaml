@@ -1819,8 +1819,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-17T08:40:56+00:00'
-      linkquality: 91
+      last_seen: '2024-02-22T06:06:25+00:00'
+      linkquality: 40
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -1923,15 +1923,15 @@
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 218.906
-      - 50.196
+      - 40
+      - 41.176
       rgb_color:
-      - 127
-      - 172
       - 255
+      - 220
+      - 150
       xy_color:
-      - 0.208
-      - 0.217
+      - 0.422
+      - 0.398
       icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
       supported_features: 44
