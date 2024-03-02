@@ -1,38 +1,38 @@
-  - platform: template
-    covers:
-      garage_door:
-        device_class: garage
-        friendly_name: "Garagentor_HA"
-        unique_id: gargentor_ha
-        value_template: >
-          {% if states('binary_sensor.garagentor_auf') == "on" %}
-            open
-          {% elif states('binary_sensor.garagentor_zu') == "off" %}
-            closed
+- platform: template
+  covers:
+    garage_door:
+      device_class: garage
+      friendly_name: "Garagentor_HA"
+      unique_id: gargentor_ha
+      value_template: >
+        {% if states('binary_sensor.garagentor_auf') == "on" %}
+          open
+        {% elif states('binary_sensor.garagentor_zu') == "off" %}
+          closed
+        {% else %}
+          {% if as_timestamp(states.binary_sensor.garagentor_zu.last_changed) > as_timestamp(states.binary_sensor.garagentor_auf.last_changed) %}
+            opening
           {% else %}
-            {% if as_timestamp(states.binary_sensor.garagentor_zu.last_changed) > as_timestamp(states.binary_sensor.garagentor_auf.last_changed) %}
-              opening
-            {% else %}
-              closing
-            {% endif %}      
-          {% endif %}
-        open_cover:
-          service: switch.turn_on
-          data:
-            entity_id: switch.garagentor
-        close_cover:
-          service: switch.turn_on
-          data:
-            entity_id: switch.garagentor
-        stop_cover:
-          service: switch.turn_on
-          data:
-            entity_id: switch.garagentor
-        icon_template: >
-          {% if states('binary_sensor.garagentor_auf') == "off" %}
-            mdi:garage-variant
-          {% elif states('binary_sensor.garagentor_zu') == "on" %}
-            mdi:garage-open-variant
-          {% else %}
-            garage-alert-variant
-          {% endif %}
+            closing
+          {% endif %}      
+        {% endif %}
+      open_cover:
+        service: switch.turn_on
+        data:
+          entity_id: switch.garagentor
+      close_cover:
+        service: switch.turn_on
+        data:
+          entity_id: switch.garagentor
+      stop_cover:
+        service: switch.turn_on
+        data:
+          entity_id: switch.garagentor
+      icon_template: >
+        {% if states('binary_sensor.garagentor_auf') == "off" %}
+          mdi:garage-variant
+        {% elif states('binary_sensor.garagentor_zu') == "on" %}
+          mdi:garage-open-variant
+        {% else %}
+          garage-alert-variant
+        {% endif %}
