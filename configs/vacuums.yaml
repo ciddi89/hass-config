@@ -1,0 +1,4 @@
+- platform: viomi_vacuum_v8
+  host: 172.20.30.137
+  token: !secret xiaomi_vacuum_token_schaumi
+  name: Schaumi

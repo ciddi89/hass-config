@@ -31,5 +31,6 @@ http: !include configs/http.yaml
 mqtt: !include configs/mqtt.yaml
 notify: !include configs/notifies.yaml
 sensor: !include configs/sensors.yaml
+vacuum: !include configs/vacuums.yaml
 waste_collection_schedule: !include configs/waste_collection_schedule.yaml
 zone: !include configs/zones.yaml

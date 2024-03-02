@@ -1100,7 +1100,7 @@
         entity_id: input_boolean.licht_kuche_bypass
   mode: single
 - id: '1691346643021'
-  alias: Licht - Wohnzimmer PS Ambilight
+  alias: Licht - Wohnzimmer Ambilight
   description: ''
   trigger:
   - platform: device
@@ -1116,26 +1116,64 @@
     - media_player.tv_samsung_led55
   condition: []
   action:
-  - if:
-    - condition: and
-      conditions:
-      - condition: numeric_state
-        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
-        below: 0.5
-      - condition: state
-        entity_id: media_player.tv_samsung_led55
-        state: 'on'
-    then:
-    - type: turn_on
-      device_id: 279ef68ea0c5a74e292f44af7f332043
-      entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
-      domain: light
-      brightness_pct: 15
-    else:
-    - type: turn_off
-      device_id: 279ef68ea0c5a74e292f44af7f332043
-      entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
-      domain: light
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+          below: 0.5
+        - condition: device
+          type: is_on
+          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+          entity_id: 132911bfbadee2cc73493618141d505a
+          domain: remote
+        - condition: state
+          entity_id: media_player.tv_samsung_led55
+          state: 'on'
+          enabled: false
+      sequence:
+      - type: turn_on
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
+        brightness_pct: 15
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+          above: 0.5
+        - condition: device
+          type: is_on
+          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+          entity_id: 132911bfbadee2cc73493618141d505a
+          domain: remote
+        - condition: state
+          entity_id: media_player.tv_samsung_led55
+          state: 'on'
+          enabled: false
+      sequence:
+      - type: turn_off
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
+    - conditions:
+      - condition: device
+        type: is_off
+        device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+        entity_id: 132911bfbadee2cc73493618141d505a
+        domain: remote
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - type: turn_off
+        device_id: 279ef68ea0c5a74e292f44af7f332043
+        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+        domain: light
   mode: single
 - id: '1691347518564'
   alias: Licht - Küche Taster
@@ -1893,27 +1931,4 @@
     device_id: c27b1c795ced08c4c425b2344a258833
     entity_id: aa7173183dc864112e9fa215fd691505
     domain: switch
-  mode: single
-- id: '1708710714314'
-  alias: Neue Automatisierung
-  description: ''
-  trigger: []
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - service: notify.christian_iphone
-    metadata: {}
-    data:
-      data:
-        actions:
-        - action: ALARM
-          title: Sound Alarm
-        - action: URI
-          title: Open Url
-          uri: https://google.com
-      message: Test
   mode: single

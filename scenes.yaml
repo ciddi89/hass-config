@@ -2305,51 +2305,11 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
-      friendly_name: Wohnzimmer Stehlampe
-      supported_features: 44
+      effect:
       color_mode: brightness
       brightness: 64
-      state: 'on'
-    light.wohnzimmer_ambilight:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - fireplace
-      - colorloop
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - color_temp
-      - xy
-      color:
-        h: 23
-        hue: 23
-        s: 98
-        saturation: 98
-        x: 0.5525
-        y: 0.4127
-      friendly_name: Wohnzimmer Ambilight
+      friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
-      color_mode: xy
-      brightness: 82
-      hs_color:
-      - 35.833
-      - 84.706
-      rgb_color:
-      - 255
-      - 168
-      - 39
-      xy_color:
-      - 0.5525
-      - 0.4127
       state: 'on'
     light.wohnzimmer_tischlampe:
       min_color_temp_kelvin: 2000
@@ -2370,26 +2330,11 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 17
-        hue: 17
-        s: 96
-        saturation: 96
-        x: 0.5637
-        y: 0.39
-      color_temp_startup: 65535
-      last_seen: '2023-08-12T15:52:33+00:00'
-      linkquality: 98
-      power_on_behavior: previous
-      update:
-        installed_version: -1
-        latest_version: -1
-        state:
-      update_available:
-      friendly_name: Wohnzimmer Tischlampe
-      supported_features: 44
+      effect:
       color_mode: xy
       brightness: 102
+      color_temp_kelvin:
+      color_temp:
       hs_color:
       - 29.548
       - 78.039
@@ -2400,6 +2345,24 @@
       xy_color:
       - 0.5637
       - 0.39
+      color:
+        h: 17
+        hue: 17
+        s: 96
+        saturation: 96
+        x: 0.5637
+        y: 0.39
+      color_temp_startup: 65535
+      last_seen: '2024-03-01T08:31:17+00:00'
+      linkquality: 58
+      power_on_behavior: previous
+      update:
+        installed_version: 16786948
+        latest_version: 16786948
+        state: idle
+      update_available:
+      friendly_name: Wohnzimmer Tischlampe
+      supported_features: 44
       state: 'on'
     switch.wohnzimmer_wohnwand:
       friendly_name: Wohnzimmer Wohnwand
@@ -2407,9 +2370,9 @@
     light.wohnzimmer_wohnwand:
       supported_color_modes:
       - onoff
+      color_mode: onoff
       friendly_name: Wohnzimmer Wohnwand
       supported_features: 0
-      color_mode: onoff
       state: 'on'
   icon: mdi:sony-playstation
   metadata: {}
