@@ -296,12 +296,12 @@
       rgb_color:
       xy_color:
       color:
-        h: 38
-        hue: 38
-        s: 62
-        saturation: 62
-        x: 0.4042
-        y: 0.3902
+        h: 40
+        hue: 40
+        s: 52
+        saturation: 52
+        x: 0.3849
+        y: 0.3795
       friendly_name: Wohnzimmer Ambilight
       supported_features: 44
       state: 'off'
@@ -365,8 +365,8 @@
         x: 0.5637
         y: 0.39
       color_temp_startup: 65535
-      last_seen: '2024-02-17T23:06:07+00:00'
-      linkquality: 58
+      last_seen: '2024-03-06T17:54:22+00:00'
+      linkquality: 47
       power_on_behavior: previous
       update:
         installed_version: 16786948
@@ -419,8 +419,8 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-02-17T23:00:19+00:00'
-      linkquality: 91
+      last_seen: '2024-03-06T17:46:07+00:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
         installed_version: 16782594
@@ -464,8 +464,8 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-02-17T23:00:17+00:00'
-      linkquality: 91
+      last_seen: '2024-03-06T17:46:07+00:00'
+      linkquality: 51
       power_on_behavior: previous
       update:
         installed_version: 16782594
@@ -518,8 +518,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-17T23:04:24+00:00'
-      linkquality: 58
+      last_seen: '2024-03-06T17:54:23+00:00'
+      linkquality: 91
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -563,8 +563,8 @@
         saturation: 49
         x: 0.3804
         y: 0.3767
-      last_seen: '2024-02-17T22:59:27+00:00'
-      linkquality: 123
+      last_seen: '2024-03-06T17:54:40+00:00'
+      linkquality: 102
       power_on_behavior:
       update:
         installed_version: 16785412
@@ -608,8 +608,8 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-02-17T22:59:29+00:00'
-      linkquality: 87
+      last_seen: '2024-03-06T17:54:23+00:00'
+      linkquality: 72
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -653,8 +653,8 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-02-17T22:59:31+00:00'
-      linkquality: 69
+      last_seen: '2024-03-06T17:54:23+00:00'
+      linkquality: 72
       power_on_behavior: previous
       update:
         installed_version: 16785162
@@ -698,8 +698,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-17T23:00:29+00:00'
-      linkquality: 76
+      last_seen: '2024-03-06T17:50:18+00:00'
+      linkquality: 47
       power_on_behavior:
       update:
         installed_version: 16782594
@@ -743,8 +743,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-17T22:58:53+00:00'
-      linkquality: 87
+      last_seen: '2024-03-06T17:54:41+00:00'
+      linkquality: 47
       power_on_behavior: previous
       update:
         installed_version: 16785162
@@ -783,8 +783,8 @@
       state: 'off'
     switch.gastezimmer_tischlampe:
       indicator_mode:
-      last_seen: '2024-02-17T22:59:25+00:00'
-      linkquality: 87
+      last_seen: '2024-03-06T17:46:06+00:00'
+      linkquality: 47
       power_on_behavior:
       friendly_name: Gästezimmer Tischlampe
       state: 'off'
@@ -810,9 +810,28 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      color:
+        h: 190
+        hue: 190
+        s: 92
+        saturation: 92
+        x: 0.17
+        y: 0.314
+      color_power_on_behavior: previous
+      do_not_disturb: true
+      last_seen: '2024-03-06T17:53:15+00:00'
+      linkquality: 58
       friendly_name: Terrasse Leuchtkugel
       supported_features: 44
-      state: unavailable
+      state: 'off'
     light.terrasse_spot:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -832,9 +851,32 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      color:
+        h: 310
+        hue: 310
+        s: 66
+        saturation: 66
+        x: 0.371
+        y: 0.2394
+      last_seen: '2024-03-06T17:47:19+00:00'
+      linkquality: 69
+      power_on_behavior: previous
+      update:
+        installed_version: 16785162
+        latest_version: 16785162
+        state: idle
+      update_available:
       friendly_name: Terrasse Spot
       supported_features: 44
-      state: unavailable
+      state: 'off'
     switch.terrasse_brunnen_taster_eg_wz_terr_brunnen_taster:
       interface_id: RaspberryMatic-HmIP-RF
       address: 00085BE98C2BA6:4
@@ -844,94 +886,14 @@
       device_class: switch
       friendly_name: Terrasse Brunnen Taster EG-WZ-TERR-Brunnen-Taster
       state: 'off'
-    light.flur_stehlampe:
+    light.h6076:
       min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9009
+      max_color_temp_kelvin: 9000
       min_mireds: 111
       max_mireds: 500
-      effect_list:
-      - ''
-      - Accumulation
-      - Beauty
-      - Birthday
-      - Blossom
-      - Blue green
-      - Bouncing Ball
-      - Bubble
-      - Candy
-      - Carnival
-      - Cheerful
-      - Cherry blossoms
-      - Christmas
-      - Downpour
-      - Dreamland
-      - Dreamlike
-      - Electro Dance
-      - Father's Day
-      - Fight
-      - Fire
-      - Fireworks
-      - Forest
-      - Game
-      - Glacier
-      - Halloween
-      - Heartbeat
-      - Journey of Flowers
-      - Karst Cave
-      - Lake
-      - 'Lava '
-      - Lava2
-      - Lava3
-      - Leisure
-      - Leisurely
-      - Light
-      - Meteor
-      - Morning
-      - Mother's Day
-      - Movie
-      - 'Music: Bounce'
-      - 'Music: Calm'
-      - 'Music: CandyCrush'
-      - 'Music: Dynamic'
-      - 'Music: Energic'
-      - 'Music: Fusion'
-      - 'Music: Hopping'
-      - 'Music: Luminous'
-      - 'Music: Separation'
-      - 'Music: Skittles'
-      - 'Music: Strike'
-      - 'Music: Torch'
-      - 'Music: Vibrate'
-      - Night
-      - Night Light
-      - Party
-      - Profound
-      - Rainbow
-      - Rainbow-A
-      - Release
-      - Ripple
-      - Romantic
-      - Rush
-      - Rustling leaves
-      - Stacking
-      - Study
-      - Sunrise
-      - Sunset
-      - Sweet
-      - Swing
-      - Technology
-      - Tenderness
-      - The Piano
-      - Tunnel
-      - Valentine's Day
-      - Volcano
-      - Warm
-      - Wave
-      - Work
       supported_color_modes:
       - color_temp
       - rgb
-      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -939,9 +901,8 @@
       hs_color:
       rgb_color:
       xy_color:
-      icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
-      supported_features: 44
+      supported_features: 0
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
   metadata:
@@ -987,7 +948,7 @@
       entity_only: true
     switch.terrasse_brunnen_taster_eg_wz_terr_brunnen_taster:
       entity_only: true
-    light.flur_stehlampe:
+    light.h6076:
       entity_only: true
 - id: '1690370907103'
   name: Büro Alles aus
@@ -1661,8 +1622,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-18T11:15:06+00:00'
-      linkquality: 83
+      last_seen: '2024-03-06T17:55:29+00:00'
+      linkquality: 94
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -1672,94 +1633,14 @@
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'off'
-    light.flur_stehlampe:
+    light.h6076:
       min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9009
+      max_color_temp_kelvin: 9000
       min_mireds: 111
       max_mireds: 500
-      effect_list:
-      - ''
-      - Accumulation
-      - Beauty
-      - Birthday
-      - Blossom
-      - Blue green
-      - Bouncing Ball
-      - Bubble
-      - Candy
-      - Carnival
-      - Cheerful
-      - Cherry blossoms
-      - Christmas
-      - Downpour
-      - Dreamland
-      - Dreamlike
-      - Electro Dance
-      - Father's Day
-      - Fight
-      - Fire
-      - Fireworks
-      - Forest
-      - Game
-      - Glacier
-      - Halloween
-      - Heartbeat
-      - Journey of Flowers
-      - Karst Cave
-      - Lake
-      - 'Lava '
-      - Lava2
-      - Lava3
-      - Leisure
-      - Leisurely
-      - Light
-      - Meteor
-      - Morning
-      - Mother's Day
-      - Movie
-      - 'Music: Bounce'
-      - 'Music: Calm'
-      - 'Music: CandyCrush'
-      - 'Music: Dynamic'
-      - 'Music: Energic'
-      - 'Music: Fusion'
-      - 'Music: Hopping'
-      - 'Music: Luminous'
-      - 'Music: Separation'
-      - 'Music: Skittles'
-      - 'Music: Strike'
-      - 'Music: Torch'
-      - 'Music: Vibrate'
-      - Night
-      - Night Light
-      - Party
-      - Profound
-      - Rainbow
-      - Rainbow-A
-      - Release
-      - Ripple
-      - Romantic
-      - Rush
-      - Rustling leaves
-      - Stacking
-      - Study
-      - Sunrise
-      - Sunset
-      - Sweet
-      - Swing
-      - Technology
-      - Tenderness
-      - The Piano
-      - Tunnel
-      - Valentine's Day
-      - Volcano
-      - Warm
-      - Wave
-      - Work
       supported_color_modes:
       - color_temp
       - rgb
-      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -1767,13 +1648,12 @@
       hs_color:
       rgb_color:
       xy_color:
-      icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
-      supported_features: 44
+      supported_features: 0
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
   metadata:
-    light.flur_stehlampe:
+    light.h6076:
       entity_only: true
 - id: '1690371443013'
   name: Flur EG Tag
@@ -1819,8 +1699,8 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-02-22T06:06:25+00:00'
-      linkquality: 40
+      last_seen: '2024-03-06T17:54:53+00:00'
+      linkquality: 94
       power_on_behavior:
       update:
         installed_version: 16786696
@@ -1830,96 +1710,16 @@
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'on'
-    light.flur_stehlampe:
+    light.h6076:
       min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9009
+      max_color_temp_kelvin: 9000
       min_mireds: 111
       max_mireds: 500
-      effect_list:
-      - ''
-      - Accumulation
-      - Beauty
-      - Birthday
-      - Blossom
-      - Blue green
-      - Bouncing Ball
-      - Bubble
-      - Candy
-      - Carnival
-      - Cheerful
-      - Cherry blossoms
-      - Christmas
-      - Downpour
-      - Dreamland
-      - Dreamlike
-      - Electro Dance
-      - Father's Day
-      - Fight
-      - Fire
-      - Fireworks
-      - Forest
-      - Game
-      - Glacier
-      - Halloween
-      - Heartbeat
-      - Journey of Flowers
-      - Karst Cave
-      - Lake
-      - 'Lava '
-      - Lava2
-      - Lava3
-      - Leisure
-      - Leisurely
-      - Light
-      - Meteor
-      - Morning
-      - Mother's Day
-      - Movie
-      - 'Music: Bounce'
-      - 'Music: Calm'
-      - 'Music: CandyCrush'
-      - 'Music: Dynamic'
-      - 'Music: Energic'
-      - 'Music: Fusion'
-      - 'Music: Hopping'
-      - 'Music: Luminous'
-      - 'Music: Separation'
-      - 'Music: Skittles'
-      - 'Music: Strike'
-      - 'Music: Torch'
-      - 'Music: Vibrate'
-      - Night
-      - Night Light
-      - Party
-      - Profound
-      - Rainbow
-      - Rainbow-A
-      - Release
-      - Ripple
-      - Romantic
-      - Rush
-      - Rustling leaves
-      - Stacking
-      - Study
-      - Sunrise
-      - Sunset
-      - Sweet
-      - Swing
-      - Technology
-      - Tenderness
-      - The Piano
-      - Tunnel
-      - Valentine's Day
-      - Volcano
-      - Warm
-      - Wave
-      - Work
       supported_color_modes:
       - color_temp
       - rgb
-      effect:
       color_mode: rgb
-      brightness: 26
+      brightness: 25
       color_temp_kelvin:
       color_temp:
       hs_color:
@@ -1932,13 +1732,12 @@
       xy_color:
       - 0.422
       - 0.398
-      icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
-      supported_features: 44
+      supported_features: 0
       state: 'on'
   icon: hue:scene-bright
   metadata:
-    light.flur_stehlampe:
+    light.h6076:
       entity_only: true
 - id: '1690371479270'
   name: Flur EG Nacht

@@ -1113,25 +1113,27 @@
     - sensor.wohnzimmer_bmw_beleuchtungsstarke
   - platform: state
     entity_id:
-    - media_player.tv_samsung_led55
+    - media_player.home_theater
   condition: []
   action:
   - choose:
     - conditions:
+      - condition: numeric_state
+        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+        below: 0.5
       - condition: and
         conditions:
-        - condition: numeric_state
-          entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
-          below: 0.5
-        - condition: device
-          type: is_on
-          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-          entity_id: 132911bfbadee2cc73493618141d505a
-          domain: remote
-        - condition: state
-          entity_id: media_player.tv_samsung_led55
-          state: 'on'
-          enabled: false
+        - condition: or
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+            entity_id: 132911bfbadee2cc73493618141d505a
+            domain: remote
+          - condition: state
+            entity_id: media_player.home_theater
+            state: 'on'
+            enabled: true
       sequence:
       - type: turn_on
         device_id: 279ef68ea0c5a74e292f44af7f332043
@@ -1144,26 +1146,35 @@
         - condition: numeric_state
           entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
           above: 0.5
-        - condition: device
-          type: is_on
-          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-          entity_id: 132911bfbadee2cc73493618141d505a
-          domain: remote
-        - condition: state
-          entity_id: media_player.tv_samsung_led55
-          state: 'on'
-          enabled: false
+        - condition: or
+          conditions:
+          - condition: device
+            type: is_on
+            device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+            entity_id: 132911bfbadee2cc73493618141d505a
+            domain: remote
+          - condition: state
+            entity_id: media_player.home_theater
+            state: 'on'
+            enabled: true
       sequence:
       - type: turn_off
         device_id: 279ef68ea0c5a74e292f44af7f332043
         entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
         domain: light
     - conditions:
-      - condition: device
-        type: is_off
-        device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-        entity_id: 132911bfbadee2cc73493618141d505a
-        domain: remote
+      - condition: and
+        conditions:
+        - condition: device
+          type: is_off
+          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
+          entity_id: 132911bfbadee2cc73493618141d505a
+          domain: remote
+        - condition: device
+          device_id: 3c188dd62678660180b3c7fbe72fa0b5
+          domain: media_player
+          entity_id: ff67403aea50b386e1ea601b15bd44b5
+          type: is_off
       sequence:
       - delay:
           hours: 0
@@ -1607,7 +1618,7 @@
     id: Robbi
   - platform: state
     entity_id:
-    - vacuum.viomi_v8_1e11_robot_cleaner
+    - vacuum.schaumi
     from: cleaning
     to: returning
     id: Schaumi

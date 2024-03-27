@@ -28,6 +28,7 @@ camera: !include configs/cameras.yaml
 cover: !include configs/covers.yaml
 custom_templates: !include configs/custom_templates.yaml
 http: !include configs/http.yaml
+homekit: !include configs/homekit.yaml
 mqtt: !include configs/mqtt.yaml
 notify: !include configs/notifies.yaml
 sensor: !include configs/sensors.yaml
