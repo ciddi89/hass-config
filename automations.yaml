@@ -1662,6 +1662,8 @@
       data:
         x_coord: '24800'
         y_coord: '27500'
+      target:
+        entity_id: vacuum.roborock_s7
     else:
     - device_id: 79fd01e9b0d0e223fdfb3cbfc54a8531
       domain: vacuum
@@ -1942,4 +1944,117 @@
     device_id: c27b1c795ced08c4c425b2344a258833
     entity_id: aa7173183dc864112e9fa215fd691505
     domain: switch
+  mode: single
+- id: '1711664867577'
+  alias: Anwesenheit - Christian Detailierter
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.christian
+    from: not_home
+    to: home
+    id: Setze Christian auf gerade angekommen
+  - platform: state
+    entity_id:
+    - input_select.christian_status_dropdown
+    to: Gerade angekommen
+    id: Setze Christian auf Anwesend nach 10 min
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - platform: state
+    entity_id:
+    - input_select.christian_status_dropdown
+    to: Gerade angekommen
+    id: 'Setze Christian auf Anwesend '
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: Gerade verlassen
+  - platform: state
+    entity_id:
+    - person.christian
+    from: home
+    to: not_home
+    id: Setze Christian auf gerade verlassen
+  - platform: state
+    entity_id:
+    - input_select.christian_status_dropdown
+    to: Gerade verlassen
+    id: Setze Christian auf Abwesend nach 10min
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - platform: state
+    entity_id:
+    - input_select.christian_status_dropdown
+    to: Abwesend
+    id: Setze Christian auf Verlängert Abwesend nach 24std
+    for:
+      hours: 24
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Setze Christian auf gerade angekommen
+      sequence:
+      - service: input_select.select_option
+        metadata: {}
+        data:
+          option: Gerade angekommen
+        target:
+          entity_id: input_select.christian_status_dropdown
+    - conditions:
+      - condition: trigger
+        id:
+        - Setze Christian auf Anwesend nach 10 min
+        - 'Setze Christian auf Anwesend '
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.christian_status_dropdown
+        data:
+          option: Zu Hause
+    - conditions:
+      - condition: trigger
+        id:
+        - Setze Christian auf gerade verlassen
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.christian_status_dropdown
+        data:
+          option: Gerade verlassen
+    - conditions:
+      - condition: trigger
+        id:
+        - Setze Christian auf Abwesend nach 10min
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.christian_status_dropdown
+        data:
+          option: Abwesend
+    - conditions:
+      - condition: trigger
+        id:
+        - Setze Christian auf Verlängert Abwesend nach 24min
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.christian_status_dropdown
+        data:
+          option: Verlängerte Abwesenheit
   mode: single
