@@ -1,0 +1,19 @@
+- sensor:
+    command: "/usr/local/bin/speedtest --json --secure"
+    name: SpeedTest Data
+    unique_id: speedtest_data
+    command_timeout: 90
+    scan_interval: 14400
+    value_template: >
+      {{
+        {
+          "ping": value_json.ping,
+          "download": value_json.download,
+          "upload": value_json.upload
+        }
+          | to_json
+      }}
+    json_attributes:
+      - ping
+      - download
+      - upload

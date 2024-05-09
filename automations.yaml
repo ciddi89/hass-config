@@ -114,6 +114,8 @@
       light_transition_off: 0.6
       night_light_transition_on: 0.6
       night_light_transition_off: 0.6
+      motion_bypass_lights_on:
+      - input_boolean.licht_kuche_bypass
 - id: '1688840530518'
   alias: Notification - Temperatur Aussen Innen
   description: ''
@@ -158,23 +160,23 @@
     Lichter  bypässe aktivieren\n- Rufumleitung deaktivieren\n\nVerlassen: \n- Alarmanlage
     an\n- Haustür abschliessen\n- Rufumleitung aktivieren"
   trigger:
-  - platform: zone
-    entity_id: device_tracker.christians_iphone
-    zone: zone.home
-    event: enter
-    id: Betreten
-  - platform: zone
-    entity_id: device_tracker.christians_iphone
-    zone: zone.home
-    event: leave
-    id: Verlassen
+  - platform: numeric_state
+    entity_id:
+    - zone.home
+    above: 0
+    id: Anwesend
+  - platform: numeric_state
+    entity_id:
+    - zone.home
+    below: 1
+    id: Abwesend
   condition: []
   action:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - Betreten
+        - Anwesend
       sequence:
       - service: alarm_control_panel.alarm_disarm
         data: {}
@@ -208,7 +210,7 @@
     - conditions:
       - condition: trigger
         id:
-        - Verlassen
+        - Abwesend
       sequence:
       - service: scene.turn_on
         data: {}
@@ -423,16 +425,10 @@
         id:
         - Sonnenuntergang
       sequence:
-      - type: turn_on
-        device_id: 64d50194e3b193a20bfe154775cb4077
-        entity_id: eacc108d5b64af3252ae9e6ab6e996e5
-        domain: light
-        brightness_pct: 25
-      - type: turn_on
-        device_id: f4815c5c151df0711edca3935e446055
-        entity_id: f9da9ba0761d40bbcdf48780533add98
-        domain: light
-        brightness_pct: 80
+      - service: scene.turn_on
+        metadata: {}
+        target:
+          entity_id: scene.terrasse_abend
     - conditions:
       - condition: trigger
         id:
@@ -464,22 +460,6 @@
       keep_days: 7
       location: Synology_NAS
   mode: single
-- id: '1690222525818'
-  alias: Notification - Battery Level low
-  description: Tägliche Übersicht wenn low level Batteries erkannt wurden
-  use_blueprint:
-    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
-    input:
-      actions:
-      - service: notify.mobile_app_christians_iphone
-        data:
-          title: Batteriewarnung
-          message: 'Gerät(e) mit geringer Batterie erkannt: {{sensors}}'
-      exclude:
-        entity_id:
-        - sensor.christians_iphone_battery_level
-        - sensor.christians_ipad_battery_level
-        - sensor.macbook_pro_internal_battery_level
 - id: '1690228220678'
   alias: Notification - Fenster/Tür geöffnet
   description: ''
@@ -501,24 +481,25 @@
     entity_id: person.christian
     state: not_home
   action:
-  - if:
-    - condition: trigger
-      id:
-      - fenster
-    then:
-    - service: notify.notify
-      data:
-        title: Sicherheitssystem
-        message: 'Achtung! Folgendes Fenster wurde geöffnet: {{states(''sensor.fenster_zuletzt_geoffnet'')}}'
-  - if:
-    - condition: trigger
-      id:
-      - tür
-    then:
-    - service: notify.notify
-      data:
-        title: Sicherheitssystem
-        message: 'Achtung! Folgende Tür wurde geöffnet: {{states(''sensor.tur_zuletzt_geoffnet'')}}'
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - tür
+      sequence:
+      - service: notify.notify
+        data:
+          title: Sicherheitssystem
+          message: 'Achtung! Folgende Tür wurde geöffnet: {{states(''sensor.tur_zuletzt_geoffnet'')}}'
+    - conditions:
+      - condition: trigger
+        id:
+        - fenster
+      sequence:
+      - service: notify.notify
+        data:
+          title: Sicherheitssystem
+          message: 'Achtung! Folgendes Fenster wurde geöffnet: {{states(''sensor.fenster_zuletzt_geoffnet'')}}'
   mode: single
 - id: '1690543145284'
   alias: Licht - Büro
@@ -556,6 +537,8 @@
       night_light_transition_off: 0.6
       light_transition_off: 0.6
       motion_bypass: input_boolean.licht_buro_bypass
+      motion_bypass_lights_on:
+      - input_boolean.licht_buro_bypass
 - id: '1691157592844'
   alias: Licht - HSW Hue Tap
   description: ''
@@ -609,18 +592,19 @@
     path: Blackshome/sensor-light.yaml
     input:
       motion_trigger:
-      - binary_sensor.auffahrt_bewegungsmelder_occupancy
+      - binary_sensor.auffahrt_etwas_auf
       light_switch:
         entity_id: light.auffahrt_licht
       time_delay: 0.75
       motion_bypass: binary_sensor.auffahrt_etwas_auf
-      include_bypass: bypass_enabled_turn_on
+      include_bypass: []
       include_ambient: ambient_enabled
       ambient_light_sensor: sensor.auffahrt_bewegungsmelder_illuminance_lux
       ambient_light_options: ambient_light_option_disabled
       ambient_light_value: 35
       bypass_time_delay: 0.75
       night_lights_conditions: []
+      motion_bypass_lights_on: []
 - id: '1691166473313'
   alias: Licht - Wohnzimmer BWM
   description: ''
@@ -647,6 +631,8 @@
       night_light_transition_off: 0.6
       include_light_control:
       - use_transition
+      motion_bypass_lights_on:
+      - input_boolean.licht_wohnzimmer_bypass
 - id: '1691242530952'
   alias: Roku - Harmony Hub Tasten
   description: ''
@@ -950,9 +936,14 @@
         id:
         - Harmony
         - TV
-      - condition: state
-        entity_id: media_player.tv_samsung_led55
-        state: 'on'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: remote.tv_samsung_led55
+          state: 'on'
+        - condition: state
+          entity_id: remote.harmony_hub
+          state: 'on'
       sequence:
       - type: turn_on
         device_id: 5dd52aca928925cdcbb25506b63c1eb8
@@ -976,9 +967,14 @@
         id:
         - Harmony
         - TV
-      - condition: state
-        entity_id: media_player.tv_samsung_led55
-        state: 'off'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: remote.tv_samsung_led55
+          state: 'off'
+        - condition: state
+          entity_id: remote.harmony_hub
+          state: 'off'
       sequence:
       - service: input_boolean.turn_off
         data: {}
@@ -1008,9 +1004,14 @@
       - condition: sun
         before: sunset
         after: sunrise
-      - condition: state
-        entity_id: media_player.tv_samsung_led55
-        state: 'on'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: remote.tv_samsung_led55
+          state: 'on'
+        - condition: state
+          entity_id: remote.harmony_hub
+          state: 'on'
       sequence:
       - type: turn_off
         device_id: c63362514c42d9112b345678b7bb22c4
@@ -1034,9 +1035,14 @@
       - condition: sun
         before: sunset
         after: sunrise
-      - condition: state
-        entity_id: media_player.tv_samsung_led55
-        state: 'on'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: remote.tv_samsung_led55
+          state: 'on'
+        - condition: state
+          entity_id: remote.harmony_hub
+          state: 'on'
       sequence:
       - service: scene.turn_on
         target:
@@ -1135,11 +1141,10 @@
             state: 'on'
             enabled: true
       sequence:
-      - type: turn_on
-        device_id: 279ef68ea0c5a74e292f44af7f332043
-        entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
-        domain: light
-        brightness_pct: 15
+      - service: scene.turn_on
+        metadata: {}
+        target:
+          entity_id: scene.ambilight_standart
     - conditions:
       - condition: and
         conditions:
@@ -1334,6 +1339,8 @@
       night_light_transition_on: 0.6
       night_light_transition_off: 0.6
       light_transition_off: 0.6
+      motion_bypass_lights_on:
+      - input_boolean.licht_bypass_flur_og
 - id: '1691853870855'
   alias: Licht - Flur Sonnenuntergang
   description: ''
@@ -1406,6 +1413,8 @@
       night_light_transition_on: 0.6
       night_light_transition_off: 0.6
       light_transition_on: 0.6
+      motion_bypass_lights_on:
+      - input_boolean.licht_bypass_flur_eg
 - id: '1691856116897'
   alias: Licht - Flur EG Treppe
   description: ''
@@ -1440,6 +1449,8 @@
       light_transition_off: 0.6
       night_light_transition_on: 0.6
       night_light_transition_off: 0.6
+      motion_bypass_lights_on:
+      - input_boolean.licht_bypass_flur_eg
 - id: '1691923904753'
   alias: Alarmanlage - Auslösen
   description: ''
@@ -1622,7 +1633,12 @@
     from: cleaning
     to: returning
     id: Schaumi
-  condition: []
+  condition:
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.christian
+      zone: zone.home
   action:
   - choose:
     - conditions:
@@ -1929,9 +1945,13 @@
   - condition: zone
     entity_id: person.christian
     zone: zone.home
-  - condition: template
-    value_template: '{{ ''Arbeit'' in state_attr(''calendar.schichtplan'', ''message'')
-      }}'
+  - condition: state
+    entity_id: calendar.schichtplan
+    state: 'on'
+  - condition: state
+    entity_id: calendar.schichtplan
+    state: Arbeit
+    attribute: message
   - condition: time
     weekday:
     - mon
@@ -1958,7 +1978,7 @@
   - platform: state
     entity_id:
     - input_select.christian_status_dropdown
-    to: Gerade angekommen
+    to: Kürzlich angekommen
     id: Setze Christian auf Anwesend nach 10 min
     for:
       hours: 0
@@ -1967,13 +1987,13 @@
   - platform: state
     entity_id:
     - input_select.christian_status_dropdown
-    to: Gerade angekommen
+    to: Kürzlich angekommen
     id: 'Setze Christian auf Anwesend '
     for:
       hours: 0
       minutes: 0
       seconds: 0
-    from: Gerade verlassen
+    from: Kürzlich verlassen
   - platform: state
     entity_id:
     - person.christian
@@ -1983,7 +2003,7 @@
   - platform: state
     entity_id:
     - input_select.christian_status_dropdown
-    to: Gerade verlassen
+    to: Kürzlich verlassen
     id: Setze Christian auf Abwesend nach 10min
     for:
       hours: 0
@@ -2009,7 +2029,7 @@
       - service: input_select.select_option
         metadata: {}
         data:
-          option: Gerade angekommen
+          option: Kürzlich angekommen
         target:
           entity_id: input_select.christian_status_dropdown
     - conditions:
@@ -2034,7 +2054,7 @@
           entity_id:
           - input_select.christian_status_dropdown
         data:
-          option: Gerade verlassen
+          option: Kürzlich verlassen
     - conditions:
       - condition: trigger
         id:
@@ -2057,4 +2077,133 @@
           - input_select.christian_status_dropdown
         data:
           option: Verlängerte Abwesenheit
+  mode: single
+- id: '1712429461281'
+  alias: Low Battery Notifications & Actions
+  description: ''
+  use_blueprint:
+    path: Blackshome/low-battery-notifications-and-actions.yaml
+    input:
+      to_do_list: todo.ha_to_do
+      include_persistent_notification: enable_persistent_notification
+      notify_device:
+      - 8c8704041f95b4a801662374c49fc21f
+      notify_action_buttons: enable_to_do_list_button
+      time: 09:00:00
+      include_easy_notify: enable_easy_notify
+      battery_level: 15
+      custom_group_battery_level: 25
+      include_time: time_enabled
+- id: '1713537887963'
+  alias: Benachrichtigung - Rasperrymatic Servicemeldung
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.raspberrymatic_sv_servicemeldungen
+    above: 0
+  condition: []
+  action:
+  - service: notify.persistent_notification
+    metadata: {}
+    data:
+      title: Rasperrymatic Servicemeldung
+      message: '{{states(''sensor.raspberrymatic_sv_servicemeldung_text'')}}'
+  - service: notify.mobile_app_christians_iphone
+    metadata: {}
+    data:
+      title: Rasperrymatic Servicemeldung
+      message: "{% set anzahl_servicemeldungen = states('sensor.raspberrymatic_sv_servicemeldungen')
+        | float | round %} {% if anzahl_servicemeldungen == 1 %} \n  Eine Servicemeldung
+        verfügbar.\n{% elif anzahl_servicemeldungen >= 2 %}\n  {{ anzahl_servicemeldungen
+        }} Servicemeldungen verfügbar.\n{% endif %}"
+  mode: single
+- id: '1713640370654'
+  alias: Update speedtest data
+  description: Alle 4 std Speedtest machen
+  trigger:
+  - platform: time_pattern
+    hours: /3
+  condition: []
+  action:
+  - service: homeassistant.update_entity
+    target:
+      entity_id:
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
+      - sensor.speedtest_ping
+    data: {}
+  mode: single
+- id: '1714416837775'
+  alias: Arbeitsschicht
+  description: Schalte alles aus/ein während Arbeitsschicht
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.christian
+    to: Abwesend
+    id: Verlässt
+  - platform: zone
+    entity_id: device_tracker.christians_iphone
+    zone: zone.home
+    event: enter
+    id: Betreten
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Verlässt
+      - condition: state
+        entity_id: calendar.schichtplan
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.arbeitsschicht
+        data: {}
+      - service: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.steckdose_surround
+          - switch.kuche_steckdose_tv
+          - switch.0x0017880108e6f15d
+          - switch.gastezimmer_steckdose_tv
+          - switch.kuche_media_steckdose
+          - switch.wohnzimmer_tv_steckdose
+          - switch.wohnzimmer_robby_steckdose
+          - switch.usw_16_poe_ap_obergeschoss_poe
+      - service: notify.mobile_app_christians_iphone
+        metadata: {}
+        data:
+          message: Achtung! Alle unnötigen Verbraucher deaktiviert.
+          title: "Sweet Home \U0001F3E1"
+    - conditions:
+      - condition: trigger
+        id:
+        - Betreten
+      - condition: state
+        entity_id: input_boolean.arbeitsschicht
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.arbeitsschicht
+        data: {}
+      - service: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.steckdose_surround
+          - switch.kuche_steckdose_tv
+          - switch.0x0017880108e6f15d
+          - switch.gastezimmer_steckdose_tv
+          - switch.kuche_media_steckdose
+          - switch.wohnzimmer_tv_steckdose
+          - switch.wohnzimmer_robby_steckdose
+          - switch.usw_16_poe_ap_obergeschoss_poe
   mode: single

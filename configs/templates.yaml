@@ -1,0 +1,21 @@
+- sensor:
+    - name: "SpeedTest CLI Ping"
+      unique_id: speedtest_data_ping
+      icon: mdi:speedometer
+      # TIME_MILLISECONDS: Final = "ms"
+      unit_of_measurement: ms
+      state_class: measurement
+      state: "{{ (states('sensor.speedtest_data') | from_json).ping | round(2) }}"
+    - name: "SpeedTest CLI Download"
+      unique_id: speedtest_data_download
+      icon: mdi:speedometer
+      # DATA_RATE_MEGABITS_PER_SECOND: Final = "Mbit/s"
+      unit_of_measurement: Mbit/s
+      state_class: measurement
+      state: "{{ ((states('sensor.speedtest_data') | from_json).download / 1000 / 1000) | round(2) }}"
+    - name: "SpeedTest CLI Upload"
+      unique_id: speedtest_data_upload
+      icon: mdi:speedometer
+      unit_of_measurement: Mbit/s
+      state_class: measurement
+      state: "{{ ((states('sensor.speedtest_data') | from_json).upload / 1000 / 1000) | round(2) }}"

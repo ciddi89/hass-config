@@ -34,3 +34,4 @@ template: !include configs/templates.yaml
 vacuum: !include configs/vacuums.yaml
 waste_collection_schedule: !include configs/waste_collection_schedule.yaml
 zone: !include configs/zones.yaml
+command_line: !include configs/command_line.yaml
