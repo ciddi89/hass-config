@@ -181,7 +181,8 @@
       - service: alarm_control_panel.alarm_disarm
         data: {}
         target:
-          entity_id: alarm_control_panel.safe_alarm_panel
+          entity_id:
+          - alarm_control_panel.alarmanlage
       - service: lock.unlock
         data: {}
         target:
@@ -223,7 +224,8 @@
       - service: alarm_control_panel.alarm_arm_home
         data: {}
         target:
-          entity_id: alarm_control_panel.safe_alarm_panel
+          entity_id:
+          - alarm_control_panel.alarmanlage
   mode: single
 - id: '1689707453470'
   alias: Notification - Sicherheitssystem
@@ -1451,95 +1453,6 @@
       night_light_transition_off: 0.6
       motion_bypass_lights_on:
       - input_boolean.licht_bypass_flur_eg
-- id: '1691923904753'
-  alias: Alarmanlage - Auslösen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.offene_tueren
-    - sensor.offene_fenster
-    id: Tür & Fenster
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: alarm_control_panel.safe_alarm_panel
-      state: armed_home
-    - condition: state
-      entity_id: alarm_control_panel.safe_alarm_panel
-      state: armed_night
-    - condition: state
-      entity_id: alarm_control_panel.safe_alarm_panel
-      state: armed_away
-  action:
-  - service: alarm_control_panel.alarm_trigger
-    data: {}
-    target:
-      entity_id: alarm_control_panel.home_alarm
-  mode: single
-- id: '1691940111950'
-  alias: Alarmanlage - Auslösen BWM
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.sensoren_bwm_innen
-    id: Tür & Fenster
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: alarm_control_panel.safe_alarm_panel
-      state: armed_away
-  action:
-  - service: alarm_control_panel.alarm_trigger
-    data: {}
-    target:
-      entity_id: alarm_control_panel.home_alarm
-  mode: single
-- id: '1691941068316'
-  alias: Alarmanlage - Ausgelöst
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - alarm_control_panel.home_alarm
-    to: triggered
-    id: Ausgelöst
-  - platform: state
-    entity_id:
-    - alarm_control_panel.home_alarm
-    to:
-    id: Deaktiviert
-    from: triggered
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - Ausgelöst
-      sequence:
-      - service: siren.turn_on
-        data:
-          tone: FREQUENCY_RISING_AND_FALLING
-          duration: '300'
-        target:
-          device_id: 5b3ef66a2d02c587d905c6414d48d1cc
-    - conditions:
-      - condition: trigger
-        id:
-        - Deaktiviert
-      sequence:
-      - service: siren.turn_off
-        target:
-          device_id:
-          - 5b3ef66a2d02c587d905c6414d48d1cc
-        data: {}
-  mode: single
 - id: '1692485646205'
   alias: iPhone Nachtzeit
   description: ''
@@ -1564,7 +1477,7 @@
   - service: alarm_control_panel.alarm_arm_night
     data: {}
     target:
-      entity_id: alarm_control_panel.safe_alarm_panel
+      entity_id: alarm_control_panel.alarmanlage
   - service: lock.lock
     data: {}
     target:
@@ -1604,7 +1517,8 @@
   - service: alarm_control_panel.alarm_disarm
     data: {}
     target:
-      entity_id: alarm_control_panel.safe_alarm_panel
+      entity_id:
+      - alarm_control_panel.alarmanlage
   mode: single
 - id: '1694190883186'
   alias: Licht - Garage
@@ -2206,4 +2120,27 @@
           - switch.wohnzimmer_tv_steckdose
           - switch.wohnzimmer_robby_steckdose
           - switch.usw_16_poe_ap_obergeschoss_poe
+  mode: single
+- id: '1715621926054'
+  alias: Alarmanlage - Abwesend zu Anwesend (scharf)
+  description: Wenn Saugroboter starten um BWM nicht auszulösen
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.roborock_s7
+    to: cleaning
+  - platform: state
+    entity_id:
+    - vacuum.schaumi
+    to: cleaning
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.alarmanlage
+    state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_arm_home
+    metadata: {}
+    data: {}
+    target:
+      entity_id: alarm_control_panel.alarmanlage
   mode: single

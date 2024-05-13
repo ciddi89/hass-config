@@ -22,7 +22,6 @@ script: !include scripts.yaml
 
 # Manuel includes
 alert: !include configs/alerts.yaml
-binary_sensor: !include configs/binary_sensors.yaml
 camera: !include configs/cameras.yaml
 cover: !include configs/covers.yaml
 http: !include configs/http.yaml
