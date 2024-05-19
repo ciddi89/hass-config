@@ -15,6 +15,14 @@ homeassistant:
   ## Packages support enabled - Includes every package that is inside the packages/ directory
   packages: !include_dir_named packages/
 
+http:
+  # Allow nginx to reach hass
+  use_x_forwarded_for: true
+  ip_ban_enabled: true
+  login_attempts_threshold: 3
+  trusted_proxies:
+    - 172.20.50.200
+
 # Standart includes
 automation: !include automations.yaml
 scene: !include scenes.yaml
@@ -24,7 +32,6 @@ script: !include scripts.yaml
 alert: !include configs/alerts.yaml
 camera: !include configs/cameras.yaml
 cover: !include configs/covers.yaml
-http: !include configs/http.yaml
 mqtt: !include configs/mqtt.yaml
 notify: !include configs/notifies.yaml
 sensor: !include configs/sensors.yaml
