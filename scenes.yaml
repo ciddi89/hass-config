@@ -296,12 +296,12 @@
       rgb_color:
       xy_color:
       color:
-        h: 40
-        hue: 40
-        s: 52
-        saturation: 52
-        x: 0.3849
-        y: 0.3795
+        h: 38
+        hue: 38
+        s: 62
+        saturation: 62
+        x: 0.4042
+        y: 0.3902
       friendly_name: Wohnzimmer Ambilight
       supported_features: 44
       state: 'off'
@@ -365,12 +365,12 @@
         x: 0.5637
         y: 0.39
       color_temp_startup: 65535
-      last_seen: '2024-03-06T17:54:22+00:00'
-      linkquality: 47
+      last_seen: '2024-09-06T04:28:24+02:00'
+      linkquality: 54
       power_on_behavior: previous
       update:
-        installed_version: 16786948
-        latest_version: 16786948
+        installed_version: 16787456
+        latest_version: 16787456
         state: idle
       update_available:
       friendly_name: Wohnzimmer Tischlampe
@@ -419,12 +419,12 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-03-06T17:46:07+00:00'
-      linkquality: 43
+      last_seen: '2024-09-06T04:38:03+02:00'
+      linkquality: 54
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Tresen
@@ -464,12 +464,12 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2024-03-06T17:46:07+00:00'
-      linkquality: 51
+      last_seen: '2024-09-06T04:38:13+02:00'
+      linkquality: 54
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Unterbau
@@ -518,13 +518,13 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-03-06T17:54:23+00:00'
-      linkquality: 91
+      last_seen: '2024-09-06T04:29:25+02:00'
+      linkquality: 131
       power_on_behavior:
       update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
+        installed_version: 16787456
+        latest_version: 16787458
+        state: available
       update_available:
       friendly_name: Flur EG Tischlampe
       supported_features: 44
@@ -563,15 +563,15 @@
         saturation: 49
         x: 0.3804
         y: 0.3767
-      last_seen: '2024-03-06T17:54:40+00:00'
-      linkquality: 102
+      last_seen: '2024-09-06T04:33:38+02:00'
+      linkquality: 87
       power_on_behavior:
       update:
-        installed_version: 16785412
-        latest_version: 16785412
-        state: idle
+        installed_version: 16786178
+        latest_version: 16786182
+        state: available
       update_available:
-      friendly_name: Flur EG Treppenbeleuchtung
+      friendly_name: Flur Treppenbeleuchtung
       supported_features: 44
       state: 'off'
     light.flur_og_leuchtkugel:
@@ -608,13 +608,13 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-03-06T17:54:23+00:00'
-      linkquality: 72
+      last_seen: '2024-09-06T04:35:58+02:00'
+      linkquality: 51
       power_on_behavior:
       update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
+        installed_version: 16787456
+        latest_version: 16787458
+        state: available
       update_available:
       friendly_name: Flur OG Leuchtkugel
       supported_features: 44
@@ -653,13 +653,13 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-03-06T17:54:23+00:00'
-      linkquality: 72
+      last_seen: '2024-09-06T04:35:17+02:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
+        installed_version: 16786434
+        latest_version: 16786438
+        state: available
       update_available:
       friendly_name: Flur OG Tischlampe
       supported_features: 44
@@ -698,12 +698,12 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-03-06T17:50:18+00:00'
-      linkquality: 47
+      last_seen: '2024-09-06T04:35:56+02:00'
+      linkquality: 43
       power_on_behavior:
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Büro Schreibtisch
@@ -743,12 +743,12 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-03-06T17:54:41+00:00'
-      linkquality: 47
+      last_seen: '2024-09-06T04:36:23+02:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16785162
-        latest_version: 16785162
+        installed_version: 16786438
+        latest_version: 16786438
         state: idle
       update_available:
       friendly_name: Büro Audi Lampe
@@ -783,8 +783,8 @@
       state: 'off'
     switch.gastezimmer_tischlampe:
       indicator_mode:
-      last_seen: '2024-03-06T17:46:06+00:00'
-      linkquality: 47
+      last_seen: '2024-09-06T04:32:37+02:00'
+      linkquality: 43
       power_on_behavior:
       friendly_name: Gästezimmer Tischlampe
       state: 'off'
@@ -807,6 +807,8 @@
       - channel_change
       - finish_effect
       - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
       - xy
@@ -827,8 +829,8 @@
         y: 0.314
       color_power_on_behavior: previous
       do_not_disturb: true
-      last_seen: '2024-03-06T17:53:15+00:00'
-      linkquality: 58
+      last_seen: '2024-09-06T04:30:31+02:00'
+      linkquality: 87
       friendly_name: Terrasse Leuchtkugel
       supported_features: 44
       state: 'off'
@@ -865,14 +867,14 @@
         s: 66
         saturation: 66
         x: 0.371
-        y: 0.2394
-      last_seen: '2024-03-06T17:47:19+00:00'
-      linkquality: 69
+        y: 0.239
+      last_seen: '2024-09-06T04:29:56+02:00'
+      linkquality: 87
       power_on_behavior: previous
       update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
+        installed_version: 16786434
+        latest_version: 16786438
+        state: available
       update_available:
       friendly_name: Terrasse Spot
       supported_features: 44
@@ -1374,57 +1376,6 @@
 - id: '1690371214600'
   name: Flur OG Tag
   entities:
-    light.flur_og_leuchtkugel:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - fireplace
-      - colorloop
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - color_temp
-      - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2023-08-12T15:49:16+00:00'
-      linkquality: 61
-      power_on_behavior:
-      update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
-      update_available:
-      friendly_name: Flur OG Leuchtkugel
-      supported_features: 44
-      color_mode: color_temp
-      brightness: 76
-      color_temp_kelvin: 3322
-      color_temp: 301
-      hs_color:
-      - 27.369
-      - 48.786
-      rgb_color:
-      - 255
-      - 187
-      - 130
-      xy_color:
-      - 0.468
-      - 0.377
-      state: 'on'
     light.flur_og_tischlampe:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6666
@@ -1444,23 +1395,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2023-08-12T15:49:16+00:00'
-      linkquality: 69
-      power_on_behavior:
-      update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
-      update_available:
-      friendly_name: Flur OG Tischlampe
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 76
       color_temp_kelvin: 3322
@@ -1475,9 +1410,82 @@
       xy_color:
       - 0.468
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4158
+        y: 0.3957
+      last_seen: '2024-07-23T20:41:31+02:00'
+      linkquality: 58
+      power_on_behavior: previous
+      update:
+        installed_version: 16786434
+        latest_version: 16786434
+        state: idle
+      update_available:
+      friendly_name: Flur OG Tischlampe
+      supported_features: 44
+      state: 'on'
+    light.flur_og_leuchtkugel:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - candle
+      - fireplace
+      - colorloop
+      - finish_effect
+      - stop_effect
+      - stop_hue_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 76
+      color_temp_kelvin: 3322
+      color_temp: 301
+      hs_color:
+      - 27.369
+      - 48.786
+      rgb_color:
+      - 255
+      - 187
+      - 130
+      xy_color:
+      - 0.468
+      - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4158
+        y: 0.3957
+      last_seen: '2024-07-23T20:41:31+02:00'
+      linkquality: 65
+      power_on_behavior:
+      update:
+        installed_version: 16787456
+        latest_version: 16787456
+        state: idle
+      update_available:
+      friendly_name: Flur OG Leuchtkugel
+      supported_features: 44
       state: 'on'
   icon: hue:scene-bright
-  metadata: {}
+  metadata:
+    light.flur_og_tischlampe:
+      entity_only: true
+    light.flur_og_leuchtkugel:
+      entity_only: true
 - id: '1690371258125'
   name: Flur OG Nacht
   entities:
@@ -1658,6 +1666,31 @@
 - id: '1690371443013'
   name: Flur EG Tag
   entities:
+    light.h6076:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9000
+      min_mireds: 111
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - rgb
+      color_mode: rgb
+      brightness: 22
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 40
+      - 41.176
+      rgb_color:
+      - 255
+      - 220
+      - 150
+      xy_color:
+      - 0.422
+      - 0.398
+      friendly_name: Flur EG Stehlampe
+      supported_features: 0
+      state: 'on'
     light.flur_eg_tischlampe:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -1699,45 +1732,22 @@
         saturation: 67
         x: 0.4152
         y: 0.3954
-      last_seen: '2024-03-06T17:54:53+00:00'
-      linkquality: 94
+      last_seen: '2024-07-23T20:41:47+02:00'
+      linkquality: 109
       power_on_behavior:
       update:
-        installed_version: 16786696
-        latest_version: 16786696
+        installed_version: 16787456
+        latest_version: 16787456
         state: idle
       update_available:
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'on'
-    light.h6076:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9000
-      min_mireds: 111
-      max_mireds: 500
-      supported_color_modes:
-      - color_temp
-      - rgb
-      color_mode: rgb
-      brightness: 25
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      - 40
-      - 41.176
-      rgb_color:
-      - 255
-      - 220
-      - 150
-      xy_color:
-      - 0.422
-      - 0.398
-      friendly_name: Flur EG Stehlampe
-      supported_features: 0
-      state: 'on'
   icon: hue:scene-bright
   metadata:
     light.h6076:
+      entity_only: true
+    light.flur_eg_tischlampe:
       entity_only: true
 - id: '1690371479270'
   name: Flur EG Nacht
@@ -2404,4 +2414,18 @@
     light.terrasse_leuchtkugel:
       entity_only: true
     light.terrasse_spot:
+      entity_only: true
+- id: '1721556351080'
+  name: Wohnzimmer Tag
+  entities:
+    light.wohnzimmer_wohnwand:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      friendly_name: Wohnzimmer Wohnwand
+      supported_features: 0
+      state: 'on'
+  icon: mdi:white-balance-sunny
+  metadata:
+    light.wohnzimmer_wohnwand:
       entity_only: true

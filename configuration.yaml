@@ -11,17 +11,13 @@ frontend:
 tts:
   - platform: google_translate
 
-homeassistant:
-  ## Packages support enabled - Includes every package that is inside the packages/ directory
-  packages: !include_dir_named packages/
-
 http:
   # Allow nginx to reach hass
   use_x_forwarded_for: true
   ip_ban_enabled: true
   login_attempts_threshold: 3
   trusted_proxies:
-    - 172.20.50.200
+    - 172.20.50.15
 
 # Standart includes
 automation: !include automations.yaml
@@ -34,9 +30,5 @@ camera: !include configs/cameras.yaml
 cover: !include configs/covers.yaml
 mqtt: !include configs/mqtt.yaml
 notify: !include configs/notifies.yaml
-sensor: !include configs/sensors.yaml
-template: !include configs/templates.yaml
 vacuum: !include configs/vacuums.yaml
-waste_collection_schedule: !include configs/waste_collection_schedule.yaml
-zone: !include configs/zones.yaml
 command_line: !include configs/command_line.yaml
