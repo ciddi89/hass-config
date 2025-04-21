@@ -20,9 +20,10 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode: color_temp
       brightness: 26
-      color_temp_kelvin: 4200
+      color_temp_kelvin: 3906
       color_temp: 256
       hs_color:
       - 26.859
@@ -34,7 +35,6 @@
       xy_color:
       - 0.427
       - 0.367
-      effect:
       color:
         h: 40
         hue: 40
@@ -42,12 +42,12 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2023-12-25T20:46:09+00:00'
-      linkquality: 80
+      last_seen: '2024-11-21T09:39:46+01:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Tresen
@@ -72,9 +72,10 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode: color_temp
       brightness: 26
-      color_temp_kelvin: 4000
+      color_temp_kelvin: 3906
       color_temp: 256
       hs_color:
       - 26.859
@@ -86,7 +87,6 @@
       xy_color:
       - 0.427
       - 0.367
-      effect:
       color:
         h: 40
         hue: 40
@@ -94,19 +94,19 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2023-12-25T20:46:55+00:00'
-      linkquality: 65
+      last_seen: '2024-11-21T09:39:46+01:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Unterbau
       supported_features: 44
       state: 'on'
-  icon: hue:scene-nightlight
   metadata: {}
+  icon: phu:scene-nightlight
 - id: '1688767152289'
   name: Küche Tag
   entities:
@@ -129,9 +129,10 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode: color_temp
       brightness: 76
-      color_temp_kelvin: 4200
+      color_temp_kelvin: 3906
       color_temp: 256
       hs_color:
       - 26.859
@@ -143,7 +144,6 @@
       xy_color:
       - 0.427
       - 0.367
-      effect:
       color:
         h: 40
         hue: 40
@@ -151,12 +151,12 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2023-12-25T20:45:18+00:00'
-      linkquality: 80
+      last_seen: '2024-11-21T09:39:36+01:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Tresen
@@ -181,6 +181,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode: color_temp
       brightness: 76
       color_temp_kelvin: 3906
@@ -195,7 +196,6 @@
       xy_color:
       - 0.427
       - 0.367
-      effect:
       color:
         h: 40
         hue: 40
@@ -203,19 +203,19 @@
         saturation: 52
         x: 0.3849
         y: 0.3795
-      last_seen: '2023-12-25T20:44:38+00:00'
-      linkquality: 58
+      last_seen: '2024-11-21T09:39:36+01:00'
+      linkquality: 43
       power_on_behavior: previous
       update:
-        installed_version: 16782594
-        latest_version: 16782594
+        installed_version: 16783104
+        latest_version: 16783104
         state: idle
       update_available:
       friendly_name: Küche Unterbau
       supported_features: 44
       state: 'on'
-  icon: hue:scene-bright
   metadata: {}
+  icon: phu:scene-bright
 - id: '1688767416093'
   name: Küche aus
   entities:
@@ -295,13 +295,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 38
-        hue: 38
-        s: 62
-        saturation: 62
-        x: 0.4042
-        y: 0.3902
       friendly_name: Wohnzimmer Ambilight
       supported_features: 44
       state: 'off'
@@ -311,24 +304,6 @@
       color_mode:
       friendly_name: Wohnzimmer Wohnwand
       supported_features: 0
-      state: 'off'
-    light.wohnzimmer_stehlampe:
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - brightness
-      effect:
-      color_mode:
-      brightness:
-      friendly_name: Wohnzimmer Stehlampe
-      supported_features: 44
       state: 'off'
     light.wohnzimmer_tischlampe:
       min_color_temp_kelvin: 2000
@@ -357,22 +332,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 17
-        hue: 17
-        s: 96
-        saturation: 96
-        x: 0.5637
-        y: 0.39
-      color_temp_startup: 65535
-      last_seen: '2024-09-06T04:28:24+02:00'
-      linkquality: 54
-      power_on_behavior: previous
-      update:
-        installed_version: 16787456
-        latest_version: 16787456
-        state: idle
-      update_available:
       friendly_name: Wohnzimmer Tischlampe
       supported_features: 44
       state: 'off'
@@ -380,7 +339,6 @@
       interface_id: RaspberryMatic-HmIP-RF
       address: 00085BE98EF8A1:4
       model: HmIP-BSM
-      entity_type: custom
       value_state: valid
       device_class: switch
       friendly_name: Küche Arbeitsbereich Licht EG-Kueche-Tresen-Beleuchtung
@@ -412,21 +370,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 40
-        hue: 40
-        s: 52
-        saturation: 52
-        x: 0.3849
-        y: 0.3795
-      last_seen: '2024-09-06T04:38:03+02:00'
-      linkquality: 54
-      power_on_behavior: previous
-      update:
-        installed_version: 16783104
-        latest_version: 16783104
-        state: idle
-      update_available:
       friendly_name: Küche Tresen
       supported_features: 44
       state: 'off'
@@ -457,21 +400,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 40
-        hue: 40
-        s: 52
-        saturation: 52
-        x: 0.3849
-        y: 0.3795
-      last_seen: '2024-09-06T04:38:13+02:00'
-      linkquality: 54
-      power_on_behavior: previous
-      update:
-        installed_version: 16783104
-        latest_version: 16783104
-        state: idle
-      update_available:
       friendly_name: Küche Unterbau
       supported_features: 44
       state: 'off'
@@ -479,7 +407,6 @@
       interface_id: RaspberryMatic-HmIP-RF
       address: 00085A49A4B554:4
       model: HmIP-BSM
-      entity_type: custom
       value_state: valid
       device_class: switch
       friendly_name: HSW Deckenlicht
@@ -511,21 +438,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2024-09-06T04:29:25+02:00'
-      linkquality: 131
-      power_on_behavior:
-      update:
-        installed_version: 16787456
-        latest_version: 16787458
-        state: available
-      update_available:
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'off'
@@ -556,21 +468,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 40
-        hue: 40
-        s: 49
-        saturation: 49
-        x: 0.3804
-        y: 0.3767
-      last_seen: '2024-09-06T04:33:38+02:00'
-      linkquality: 87
-      power_on_behavior:
-      update:
-        installed_version: 16786178
-        latest_version: 16786182
-        state: available
-      update_available:
       friendly_name: Flur Treppenbeleuchtung
       supported_features: 44
       state: 'off'
@@ -601,21 +498,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2024-09-06T04:35:58+02:00'
-      linkquality: 51
-      power_on_behavior:
-      update:
-        installed_version: 16787456
-        latest_version: 16787458
-        state: available
-      update_available:
       friendly_name: Flur OG Leuchtkugel
       supported_features: 44
       state: 'off'
@@ -646,21 +528,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2024-09-06T04:35:17+02:00'
-      linkquality: 43
-      power_on_behavior: previous
-      update:
-        installed_version: 16786434
-        latest_version: 16786438
-        state: available
-      update_available:
       friendly_name: Flur OG Tischlampe
       supported_features: 44
       state: 'off'
@@ -691,21 +558,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2024-09-06T04:35:56+02:00'
-      linkquality: 43
-      power_on_behavior:
-      update:
-        installed_version: 16783104
-        latest_version: 16783104
-        state: idle
-      update_available:
       friendly_name: Büro Schreibtisch
       supported_features: 44
       state: 'off'
@@ -736,21 +588,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2024-09-06T04:36:23+02:00'
-      linkquality: 43
-      power_on_behavior: previous
-      update:
-        installed_version: 16786438
-        latest_version: 16786438
-        state: idle
-      update_available:
       friendly_name: Büro Audi Lampe
       supported_features: 44
       state: 'off'
@@ -776,18 +613,13 @@
       interface_id: RaspberryMatic-HmIP-RF
       address: 000858A98C274B:4
       model: HmIP-BSM
-      entity_type: custom
       value_state: valid
       device_class: switch
       friendly_name: Ankleide Deckenlicht
       state: 'off'
     switch.gastezimmer_tischlampe:
-      indicator_mode:
-      last_seen: '2024-09-06T04:32:37+02:00'
-      linkquality: 43
-      power_on_behavior:
       friendly_name: Gästezimmer Tischlampe
-      state: 'off'
+      state: unavailable
     light.terrasse_licht:
       supported_color_modes:
       - onoff
@@ -820,17 +652,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 190
-        hue: 190
-        s: 92
-        saturation: 92
-        x: 0.17
-        y: 0.314
-      color_power_on_behavior: previous
-      do_not_disturb: true
-      last_seen: '2024-09-06T04:30:31+02:00'
-      linkquality: 87
       friendly_name: Terrasse Leuchtkugel
       supported_features: 44
       state: 'off'
@@ -861,21 +682,6 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 310
-        hue: 310
-        s: 66
-        saturation: 66
-        x: 0.371
-        y: 0.239
-      last_seen: '2024-09-06T04:29:56+02:00'
-      linkquality: 87
-      power_on_behavior: previous
-      update:
-        installed_version: 16786434
-        latest_version: 16786438
-        state: available
-      update_available:
       friendly_name: Terrasse Spot
       supported_features: 44
       state: 'off'
@@ -883,19 +689,46 @@
       interface_id: RaspberryMatic-HmIP-RF
       address: 00085BE98C2BA6:4
       model: HmIP-BSM
-      entity_type: custom
       value_state: valid
       device_class: switch
       friendly_name: Terrasse Brunnen Taster EG-WZ-TERR-Brunnen-Taster
       state: 'off'
-    light.h6076:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9000
-      min_mireds: 111
-      max_mireds: 500
+    light.schlafzimmer_stehlampe:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - candle
+      - finish_effect
+      - stop_effect
+      - stop_hue_effect
+      supported_color_modes:
+      - brightness
+      effect:
+      color_mode:
+      brightness:
+      friendly_name: Schlafzimmer Stehlampe
+      supported_features: 44
+      state: 'off'
+    light.wohnzimmer_stehlampe:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 555
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
-      - rgb
+      - xy
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -903,16 +736,117 @@
       hs_color:
       rgb_color:
       xy_color:
+      friendly_name: Wohnzimmer Stehlampe
+      supported_features: 44
+      state: 'off'
+    light.flur_eg_stehlampe:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9009
+      min_mireds: 111
+      max_mireds: 500
+      effect_list:
+      - ''
+      - Accumulation
+      - ARRAKIS
+      - Aurora
+      - Beauty
+      - Birthday
+      - Blossom
+      - Blue green
+      - Bouncing Ball
+      - Bubble
+      - Candy
+      - Carnival
+      - Cheerful
+      - Cherry blossoms
+      - Christmas
+      - Downpour
+      - Dreamland
+      - Dreamlike
+      - Electro Dance
+      - Father's Day
+      - Fight
+      - Fire
+      - Fireworks
+      - Forest
+      - Game
+      - Glacier
+      - Halloween
+      - Heartbeat
+      - Journey of Flowers
+      - Karst Cave
+      - Lake
+      - 'Lava '
+      - Lava2
+      - Lava3
+      - Leisure
+      - Leisurely
+      - Light
+      - Meteor
+      - Morning
+      - Mother's Day
+      - Movie
+      - 'Music: Bounce'
+      - 'Music: Calm'
+      - 'Music: CandyCrush'
+      - 'Music: Dynamic'
+      - 'Music: Energic'
+      - 'Music: Fusion'
+      - 'Music: Hopping'
+      - 'Music: Luminous'
+      - 'Music: Separation'
+      - 'Music: Skittles'
+      - 'Music: Strike'
+      - 'Music: Torch'
+      - 'Music: Vibrate'
+      - Night
+      - Night Light
+      - Party
+      - Profound
+      - Rainbow
+      - Rainbow-A
+      - Rainbow-B
+      - Release
+      - Ripple
+      - Romantic
+      - Rush
+      - Rustling leaves
+      - SPICE
+      - Stacking
+      - Study
+      - Sunrise
+      - Sunset
+      - Sweet
+      - Swing
+      - Technology
+      - Tenderness
+      - The Piano
+      - Tunnel
+      - Valentine's Day
+      - Volcano
+      - Warm
+      - Wave
+      - Work
+      supported_color_modes:
+      - color_temp
+      - rgb
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
-      supported_features: 0
+      supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
   metadata:
     light.wohnzimmer_ambilight:
       entity_only: true
     light.wohnzimmer_wohnwand:
-      entity_only: true
-    light.wohnzimmer_stehlampe:
       entity_only: true
     light.wohnzimmer_tischlampe:
       entity_only: true
@@ -950,7 +884,11 @@
       entity_only: true
     switch.terrasse_brunnen_taster_eg_wz_terr_brunnen_taster:
       entity_only: true
-    light.h6076:
+    light.schlafzimmer_stehlampe:
+      entity_only: true
+    light.wohnzimmer_stehlampe:
+      entity_only: true
+    light.flur_eg_stehlampe:
       entity_only: true
 - id: '1690370907103'
   name: Büro Alles aus
@@ -1068,23 +1006,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2023-08-21T09:35:43+00:00'
-      linkquality: 51
-      power_on_behavior:
-      update:
-        installed_version: -1
-        latest_version: -1
-        state:
-      update_available:
-      friendly_name: Büro Schreibtisch
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 64
       color_temp_kelvin: 3333
@@ -1099,6 +1021,23 @@
       xy_color:
       - 0.467
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4152
+        y: 0.3954
+      last_seen: '2024-11-21T09:38:44+01:00'
+      linkquality: 145
+      power_on_behavior:
+      update:
+        installed_version: 16783104
+        latest_version: 16783104
+        state: idle
+      update_available:
+      friendly_name: Büro Schreibtisch
+      supported_features: 44
       state: 'on'
     light.buro_audi_lampe:
       min_color_temp_kelvin: 2000
@@ -1119,23 +1058,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2023-08-21T09:35:36+00:00'
-      linkquality: 47
-      power_on_behavior:
-      update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
-      update_available:
-      friendly_name: Büro Audi Lampe
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 51
       color_temp_kelvin: 3333
@@ -1150,6 +1073,23 @@
       xy_color:
       - 0.467
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4152
+        y: 0.3954
+      last_seen: '2024-11-21T09:38:44+01:00'
+      linkquality: 47
+      power_on_behavior: previous
+      update:
+        installed_version: 16786690
+        latest_version: 16786690
+        state: idle
+      update_available:
+      friendly_name: Büro Audi Lampe
+      supported_features: 44
       state: 'on'
     light.buro_stehlampe:
       effect_list:
@@ -1163,12 +1103,13 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
-      friendly_name: Büro Stehlampe
-      supported_features: 44
+      effect:
       color_mode: brightness
       brightness: 51
+      friendly_name: Büro Stehlampe
+      supported_features: 44
       state: 'on'
-  icon: hue:scene-bright
+  icon: phu:scene-bright
   metadata: {}
 - id: '1690371011142'
   name: Büro Nacht
@@ -1192,23 +1133,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2023-08-21T09:36:28+00:00'
-      linkquality: 54
-      power_on_behavior:
-      update:
-        installed_version: -1
-        latest_version: -1
-        state:
-      update_available:
-      friendly_name: Büro Schreibtisch
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 43
       color_temp_kelvin: 3333
@@ -1223,6 +1148,23 @@
       xy_color:
       - 0.467
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4152
+        y: 0.3954
+      last_seen: '2024-11-21T09:38:26+01:00'
+      linkquality: 145
+      power_on_behavior:
+      update:
+        installed_version: 16783104
+        latest_version: 16783104
+        state: idle
+      update_available:
+      friendly_name: Büro Schreibtisch
+      supported_features: 44
       state: 'on'
     light.buro_stehlampe:
       effect_list:
@@ -1236,10 +1178,11 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
-      friendly_name: Büro Stehlampe
-      supported_features: 44
+      effect:
       color_mode: brightness
       brightness: 25
+      friendly_name: Büro Stehlampe
+      supported_features: 44
       state: 'on'
     light.buro_audi_lampe:
       min_color_temp_kelvin: 2000
@@ -1260,23 +1203,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2023-08-21T09:36:16+00:00'
-      linkquality: 47
-      power_on_behavior:
-      update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
-      update_available:
-      friendly_name: Büro Audi Lampe
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 13
       color_temp_kelvin: 3333
@@ -1291,9 +1218,26 @@
       xy_color:
       - 0.467
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4152
+        y: 0.3954
+      last_seen: '2024-11-21T09:38:26+01:00'
+      linkquality: 51
+      power_on_behavior: previous
+      update:
+        installed_version: 16786690
+        latest_version: 16786690
+        state: idle
+      update_available:
+      friendly_name: Büro Audi Lampe
+      supported_features: 44
       state: 'on'
-  icon: hue:scene-nightlight
   metadata: {}
+  icon: mdi:weather-night
 - id: '1690371161289'
   name: Flur OG Alles aus
   entities:
@@ -1417,12 +1361,12 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-07-23T20:41:31+02:00'
-      linkquality: 58
+      last_seen: '2024-11-21T09:40:00+01:00'
+      linkquality: 138
       power_on_behavior: previous
       update:
-        installed_version: 16786434
-        latest_version: 16786434
+        installed_version: 16786690
+        latest_version: 16786690
         state: idle
       update_available:
       friendly_name: Flur OG Tischlampe
@@ -1469,23 +1413,23 @@
         saturation: 67
         x: 0.4158
         y: 0.3957
-      last_seen: '2024-07-23T20:41:31+02:00'
-      linkquality: 65
+      last_seen: '2024-11-21T09:39:57+01:00'
+      linkquality: 58
       power_on_behavior:
       update:
-        installed_version: 16787456
-        latest_version: 16787456
+        installed_version: 16787714
+        latest_version: 16787714
         state: idle
       update_available:
       friendly_name: Flur OG Leuchtkugel
       supported_features: 44
       state: 'on'
-  icon: hue:scene-bright
   metadata:
     light.flur_og_tischlampe:
       entity_only: true
     light.flur_og_leuchtkugel:
       entity_only: true
+  icon: phu:scene-bright
 - id: '1690371258125'
   name: Flur OG Nacht
   entities:
@@ -1508,23 +1452,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2023-08-12T15:52:08+00:00'
-      linkquality: 61
-      power_on_behavior:
-      update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
-      update_available:
-      friendly_name: Flur OG Leuchtkugel
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 25
       color_temp_kelvin: 3322
@@ -1539,6 +1467,23 @@
       xy_color:
       - 0.468
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4158
+        y: 0.3957
+      last_seen: '2024-11-21T09:40:06+01:00'
+      linkquality: 61
+      power_on_behavior:
+      update:
+        installed_version: 16787714
+        latest_version: 16787714
+        state: idle
+      update_available:
+      friendly_name: Flur OG Leuchtkugel
+      supported_features: 44
       state: 'on'
     light.flur_og_tischlampe:
       min_color_temp_kelvin: 2000
@@ -1559,23 +1504,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4158
-        y: 0.3957
-      last_seen: '2023-08-12T15:52:08+00:00'
-      linkquality: 69
-      power_on_behavior:
-      update:
-        installed_version: 16785162
-        latest_version: 16785162
-        state: idle
-      update_available:
-      friendly_name: Flur OG Tischlampe
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 25
       color_temp_kelvin: 3322
@@ -1590,9 +1519,26 @@
       xy_color:
       - 0.468
       - 0.377
+      color:
+        h: 36
+        hue: 36
+        s: 67
+        saturation: 67
+        x: 0.4158
+        y: 0.3957
+      last_seen: '2024-11-21T09:40:06+01:00'
+      linkquality: 138
+      power_on_behavior: previous
+      update:
+        installed_version: 16786690
+        latest_version: 16786690
+        state: idle
+      update_available:
+      friendly_name: Flur OG Tischlampe
+      supported_features: 44
       state: 'on'
-  icon: hue:scene-nightlight
   metadata: {}
+  icon: phu:scene-nightlight
 - id: '1690371411171'
   name: Flur EG Alles aus
   entities:
@@ -1623,32 +1569,101 @@
       hs_color:
       rgb_color:
       xy_color:
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2024-03-06T17:55:29+00:00'
-      linkquality: 94
-      power_on_behavior:
-      update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
-      update_available:
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'off'
-    light.h6076:
+    light.flur_eg_stehlampe:
       min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9000
+      max_color_temp_kelvin: 9009
       min_mireds: 111
       max_mireds: 500
+      effect_list:
+      - ''
+      - Accumulation
+      - ARRAKIS
+      - Aurora
+      - Beauty
+      - Birthday
+      - Blossom
+      - Blue green
+      - Bouncing Ball
+      - Bubble
+      - Candy
+      - Carnival
+      - Cheerful
+      - Cherry blossoms
+      - Christmas
+      - Downpour
+      - Dreamland
+      - Dreamlike
+      - Electro Dance
+      - Father's Day
+      - Fight
+      - Fire
+      - Fireworks
+      - Forest
+      - Game
+      - Glacier
+      - Halloween
+      - Heartbeat
+      - Journey of Flowers
+      - Karst Cave
+      - Lake
+      - 'Lava '
+      - Lava2
+      - Lava3
+      - Leisure
+      - Leisurely
+      - Light
+      - Meteor
+      - Morning
+      - Mother's Day
+      - Movie
+      - 'Music: Bounce'
+      - 'Music: Calm'
+      - 'Music: CandyCrush'
+      - 'Music: Dynamic'
+      - 'Music: Energic'
+      - 'Music: Fusion'
+      - 'Music: Hopping'
+      - 'Music: Luminous'
+      - 'Music: Separation'
+      - 'Music: Skittles'
+      - 'Music: Strike'
+      - 'Music: Torch'
+      - 'Music: Vibrate'
+      - Night
+      - Night Light
+      - Party
+      - Profound
+      - Rainbow
+      - Rainbow-A
+      - Rainbow-B
+      - Release
+      - Ripple
+      - Romantic
+      - Rush
+      - Rustling leaves
+      - SPICE
+      - Stacking
+      - Study
+      - Sunrise
+      - Sunset
+      - Sweet
+      - Swing
+      - Technology
+      - Tenderness
+      - The Piano
+      - Tunnel
+      - Valentine's Day
+      - Volcano
+      - Warm
+      - Wave
+      - Work
       supported_color_modes:
       - color_temp
       - rgb
+      effect:
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -1656,41 +1671,17 @@
       hs_color:
       rgb_color:
       xy_color:
+      icon: mdi:floor-lamp
       friendly_name: Flur EG Stehlampe
-      supported_features: 0
+      supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
   metadata:
-    light.h6076:
+    light.flur_eg_stehlampe:
       entity_only: true
 - id: '1690371443013'
   name: Flur EG Tag
   entities:
-    light.h6076:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 9000
-      min_mireds: 111
-      max_mireds: 500
-      supported_color_modes:
-      - color_temp
-      - rgb
-      color_mode: rgb
-      brightness: 22
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      - 40
-      - 41.176
-      rgb_color:
-      - 255
-      - 220
-      - 150
-      xy_color:
-      - 0.422
-      - 0.398
-      friendly_name: Flur EG Stehlampe
-      supported_features: 0
-      state: 'on'
     light.flur_eg_tischlampe:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -1720,34 +1711,129 @@
       - 48.529
       rgb_color:
       - 255
-      - 187
+      - 188
       - 131
       xy_color:
-      - 0.467
-      - 0.377
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2024-07-23T20:41:47+02:00'
-      linkquality: 109
-      power_on_behavior:
-      update:
-        installed_version: 16787456
-        latest_version: 16787456
-        state: idle
-      update_available:
+      - 0.466
+      - 0.378
       friendly_name: Flur EG Tischlampe
       supported_features: 44
       state: 'on'
-  icon: hue:scene-bright
+    light.flur_eg_stehlampe:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9009
+      min_mireds: 111
+      max_mireds: 500
+      effect_list:
+      - ''
+      - Accumulation
+      - ARRAKIS
+      - Aurora
+      - Beauty
+      - Birthday
+      - Blossom
+      - Blue green
+      - Bouncing Ball
+      - Bubble
+      - Candy
+      - Carnival
+      - Cheerful
+      - Cherry blossoms
+      - Christmas
+      - Downpour
+      - Dreamland
+      - Dreamlike
+      - Electro Dance
+      - Father's Day
+      - Fight
+      - Fire
+      - Fireworks
+      - Forest
+      - Game
+      - Glacier
+      - Halloween
+      - Heartbeat
+      - Journey of Flowers
+      - Karst Cave
+      - Lake
+      - 'Lava '
+      - Lava2
+      - Lava3
+      - Leisure
+      - Leisurely
+      - Light
+      - Meteor
+      - Morning
+      - Mother's Day
+      - Movie
+      - 'Music: Bounce'
+      - 'Music: Calm'
+      - 'Music: CandyCrush'
+      - 'Music: Dynamic'
+      - 'Music: Energic'
+      - 'Music: Fusion'
+      - 'Music: Hopping'
+      - 'Music: Luminous'
+      - 'Music: Separation'
+      - 'Music: Skittles'
+      - 'Music: Strike'
+      - 'Music: Torch'
+      - 'Music: Vibrate'
+      - Night
+      - Night Light
+      - Party
+      - Profound
+      - Rainbow
+      - Rainbow-A
+      - Rainbow-B
+      - Release
+      - Ripple
+      - Romantic
+      - Rush
+      - Rustling leaves
+      - SPICE
+      - Stacking
+      - Study
+      - Sunrise
+      - Sunset
+      - Sweet
+      - Swing
+      - Technology
+      - Tenderness
+      - The Piano
+      - Tunnel
+      - Valentine's Day
+      - Volcano
+      - Warm
+      - Wave
+      - Work
+      supported_color_modes:
+      - color_temp
+      - rgb
+      effect:
+      color_mode: rgb
+      brightness: 23
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 40
+      - 41.176
+      rgb_color:
+      - 255
+      - 220
+      - 150
+      xy_color:
+      - 0.422
+      - 0.398
+      icon: mdi:floor-lamp
+      friendly_name: Flur EG Stehlampe
+      supported_features: 44
+      state: 'on'
+  icon: phu:scene-bright
   metadata:
-    light.h6076:
-      entity_only: true
     light.flur_eg_tischlampe:
+      entity_only: true
+    light.flur_eg_stehlampe:
       entity_only: true
 - id: '1690371479270'
   name: Flur EG Nacht
@@ -1771,23 +1857,7 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 36
-        hue: 36
-        s: 67
-        saturation: 67
-        x: 0.4152
-        y: 0.3954
-      last_seen: '2023-08-12T15:58:02+00:00'
-      linkquality: 94
-      power_on_behavior:
-      update:
-        installed_version: 16786696
-        latest_version: 16786696
-        state: idle
-      update_available:
-      friendly_name: Flur EG Tischlampe
-      supported_features: 44
+      effect:
       color_mode: color_temp
       brightness: 25
       color_temp_kelvin: 3333
@@ -1797,14 +1867,128 @@
       - 48.529
       rgb_color:
       - 255
-      - 187
+      - 188
       - 131
       xy_color:
-      - 0.467
-      - 0.377
+      - 0.466
+      - 0.378
+      friendly_name: Flur EG Tischlampe
+      supported_features: 44
       state: 'on'
-  icon: hue:scene-nightlight
-  metadata: {}
+    light.flur_eg_stehlampe:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9009
+      min_mireds: 111
+      max_mireds: 500
+      effect_list:
+      - ''
+      - Accumulation
+      - ARRAKIS
+      - Aurora
+      - Beauty
+      - Birthday
+      - Blossom
+      - Blue green
+      - Bouncing Ball
+      - Bubble
+      - Candy
+      - Carnival
+      - Cheerful
+      - Cherry blossoms
+      - Christmas
+      - Downpour
+      - Dreamland
+      - Dreamlike
+      - Electro Dance
+      - Father's Day
+      - Fight
+      - Fire
+      - Fireworks
+      - Forest
+      - Game
+      - Glacier
+      - Halloween
+      - Heartbeat
+      - Journey of Flowers
+      - Karst Cave
+      - Lake
+      - 'Lava '
+      - Lava2
+      - Lava3
+      - Leisure
+      - Leisurely
+      - Light
+      - Meteor
+      - Morning
+      - Mother's Day
+      - Movie
+      - 'Music: Bounce'
+      - 'Music: Calm'
+      - 'Music: CandyCrush'
+      - 'Music: Dynamic'
+      - 'Music: Energic'
+      - 'Music: Fusion'
+      - 'Music: Hopping'
+      - 'Music: Luminous'
+      - 'Music: Separation'
+      - 'Music: Skittles'
+      - 'Music: Strike'
+      - 'Music: Torch'
+      - 'Music: Vibrate'
+      - Night
+      - Night Light
+      - Party
+      - Profound
+      - Rainbow
+      - Rainbow-A
+      - Rainbow-B
+      - Release
+      - Ripple
+      - Romantic
+      - Rush
+      - Rustling leaves
+      - SPICE
+      - Stacking
+      - Study
+      - Sunrise
+      - Sunset
+      - Sweet
+      - Swing
+      - Technology
+      - Tenderness
+      - The Piano
+      - Tunnel
+      - Valentine's Day
+      - Volcano
+      - Warm
+      - Wave
+      - Work
+      supported_color_modes:
+      - color_temp
+      - rgb
+      effect:
+      color_mode: rgb
+      brightness: 23
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 40
+      - 41.176
+      rgb_color:
+      - 255
+      - 220
+      - 150
+      xy_color:
+      - 0.422
+      - 0.398
+      icon: mdi:floor-lamp
+      friendly_name: Flur EG Stehlampe
+      supported_features: 44
+      state: 'on'
+  icon: phu:scene-nightlight
+  metadata:
+    light.flur_eg_stehlampe:
+      entity_only: true
 - id: '1690371534300'
   name: Flur EG Treppe Nacht
   entities:
@@ -1859,7 +2043,7 @@
       - 0.421
       - 0.364
       state: 'on'
-  icon: hue:scene-nightlight
+  icon: phu:scene-nightlight
   metadata: {}
 - id: '1690371562688'
   name: Flur EG Treppe Tag
@@ -1915,7 +2099,7 @@
       - 0.421
       - 0.364
       state: 'on'
-  icon: hue:scene-bright
+  icon: phu:scene-bright
   metadata: {}
 - id: '1690371851407'
   name: Wohnzimmer Alles aus
@@ -1939,39 +2123,19 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 23
-        hue: 23
-        s: 98
-        saturation: 98
-        x: 0.5525
-        y: 0.4127
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
       friendly_name: Wohnzimmer Ambilight
-      supported_features: 44
-      state: 'off'
-    light.wohnzimmer_stehlampe:
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - brightness
-      friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
       state: 'off'
     switch.wohnzimmer_wohnwand:
       friendly_name: Wohnzimmer Wohnwand
-      state: 'off'
-    light.wohnzimmer_wohnwand:
-      supported_color_modes:
-      - onoff
-      friendly_name: Wohnzimmer Wohnwand
-      supported_features: 0
       state: 'off'
     light.wohnzimmer_tischlampe:
       min_color_temp_kelvin: 2000
@@ -1992,23 +2156,43 @@
       supported_color_modes:
       - color_temp
       - xy
-      color:
-        h: 17
-        hue: 17
-        s: 96
-        saturation: 96
-        x: 0.5637
-        y: 0.39
-      color_temp_startup: 65535
-      last_seen: '2023-08-12T15:53:11+00:00'
-      linkquality: 105
-      power_on_behavior: previous
-      update:
-        installed_version: -1
-        latest_version: -1
-        state:
-      update_available:
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
       friendly_name: Wohnzimmer Tischlampe
+      supported_features: 44
+      state: 'off'
+    light.wohnzimmer_stehlampe:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 555
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-group-off-outline
@@ -2019,13 +2203,6 @@
     switch.wohnzimmer_wohnwand:
       friendly_name: Wohnzimmer Wohnwand
       state: 'on'
-    light.wohnzimmer_wohnwand:
-      supported_color_modes:
-      - onoff
-      color_mode: onoff
-      friendly_name: Wohnzimmer Wohnwand
-      supported_features: 0
-      state: 'on'
     light.wohnzimmer_tischlampe:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -2045,6 +2222,7 @@
       supported_color_modes:
       - color_temp
       - xy
+      effect:
       color_mode: xy
       brightness: 102
       color_temp_kelvin:
@@ -2059,164 +2237,96 @@
       xy_color:
       - 0.5637
       - 0.39
-      effect:
-      color:
-        h: 17
-        hue: 17
-        s: 96
-        saturation: 96
-        x: 0.5637
-        y: 0.39
-      color_temp_startup: 65535
-      last_seen: '2024-01-28T08:40:33+00:00'
-      linkquality: 131
-      power_on_behavior: previous
-      update:
-        installed_version: 16786948
-        latest_version: 16786948
-        state: idle
-      update_available:
       friendly_name: Wohnzimmer Tischlampe
       supported_features: 44
       state: 'on'
     light.wohnzimmer_stehlampe:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 555
       effect_list:
       - blink
       - breathe
       - okay
       - channel_change
-      - candle
       - finish_effect
       - stop_effect
-      - stop_hue_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
-      - brightness
-      color_mode: brightness
-      brightness: 64
+      - color_temp
+      - xy
       effect:
+      color_mode: color_temp
+      brightness: 38
+      color_temp_kelvin: 2873
+      color_temp: 348
+      hs_color:
+      - 28.047
+      - 60.459
+      rgb_color:
+      - 255
+      - 173
+      - 101
+      xy_color:
+      - 0.507
+      - 0.385
       friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
       state: 'on'
   icon: mdi:television-shimmer
   metadata: {}
-- id: '1690372039760'
-  name: Wohnzimmer Abends Gaming
+- id: '1690372205569'
+  name: Wohnzimmer Abends Standart
   entities:
-    light.wohnzimmer_stehlampe:
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - brightness
-      effect:
-      color_mode: brightness
-      brightness: 64
-      friendly_name: Wohnzimmer Stehlampe
-      supported_features: 44
+    switch.wohnzimmer_wohnwand:
+      friendly_name: Wohnzimmer Wohnwand
       state: 'on'
-    light.wohnzimmer_tischlampe:
-      min_color_temp_kelvin: 2000
+    light.wohnzimmer_wohnwand:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      friendly_name: Wohnzimmer Wohnwand
+      supported_features: 0
+      state: 'on'
+    light.wohnzimmer_stehlampe:
+      min_color_temp_kelvin: 1801
       max_color_temp_kelvin: 6535
       min_mireds: 153
-      max_mireds: 500
+      max_mireds: 555
       effect_list:
       - blink
       - breathe
       - okay
       - channel_change
-      - candle
-      - fireplace
-      - colorloop
       - finish_effect
       - stop_effect
-      - stop_hue_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
       - xy
       effect:
-      color_mode: xy
-      brightness: 102
-      color_temp_kelvin:
-      color_temp:
+      color_mode: color_temp
+      brightness: 38
+      color_temp_kelvin: 2873
+      color_temp: 348
       hs_color:
-      - 29.548
-      - 78.039
+      - 28.047
+      - 60.459
       rgb_color:
       - 255
-      - 154
-      - 56
+      - 173
+      - 101
       xy_color:
-      - 0.5637
-      - 0.39
-      color:
-        h: 17
-        hue: 17
-        s: 96
-        saturation: 96
-        x: 0.5637
-        y: 0.39
-      color_temp_startup: 65535
-      last_seen: '2024-03-01T08:31:17+00:00'
-      linkquality: 58
-      power_on_behavior: previous
-      update:
-        installed_version: 16786948
-        latest_version: 16786948
-        state: idle
-      update_available:
-      friendly_name: Wohnzimmer Tischlampe
-      supported_features: 44
-      state: 'on'
-    switch.wohnzimmer_wohnwand:
-      friendly_name: Wohnzimmer Wohnwand
-      state: 'on'
-    light.wohnzimmer_wohnwand:
-      supported_color_modes:
-      - onoff
-      color_mode: onoff
-      friendly_name: Wohnzimmer Wohnwand
-      supported_features: 0
-      state: 'on'
-  icon: mdi:sony-playstation
-  metadata: {}
-- id: '1690372205569'
-  name: Wohnzimmer Abends Standart
-  entities:
-    light.wohnzimmer_stehlampe:
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - brightness
+      - 0.507
+      - 0.385
       friendly_name: Wohnzimmer Stehlampe
       supported_features: 44
-      color_mode: brightness
-      brightness: 63
       state: 'on'
-    switch.wohnzimmer_wohnwand:
-      friendly_name: Wohnzimmer Wohnwand
-      state: 'on'
-    light.wohnzimmer_wohnwand:
-      supported_color_modes:
-      - onoff
-      friendly_name: Wohnzimmer Wohnwand
-      supported_features: 0
-      color_mode: onoff
-      state: 'on'
-  icon: hue:scene-nightlight
   metadata: {}
+  icon: phu:scene-nightlight
 - id: '1691855857747'
   name: Flur EG Treppe Aus
   entities:
@@ -2257,7 +2367,7 @@
       friendly_name: Flur EG Treppenbeleuchtung
       supported_features: 44
       state: 'off'
-  icon: hue:lightstrip-off
+  icon: phu:lightstrip-off
   metadata: {}
 - id: '1711826824688'
   name: Ambilight Standart
@@ -2325,6 +2435,8 @@
       - channel_change
       - finish_effect
       - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
       - xy
@@ -2351,9 +2463,9 @@
         x: 0.17
         y: 0.314
       color_power_on_behavior: previous
-      do_not_disturb: true
-      last_seen: '2024-03-31T14:37:18+00:00'
-      linkquality: 72
+      do_not_disturb: false
+      last_seen: '2024-11-21T09:37:21+01:00'
+      linkquality: 138
       friendly_name: Terrasse Leuchtkugel
       supported_features: 44
       state: 'on'
@@ -2398,23 +2510,23 @@
         saturation: 66
         x: 0.371
         y: 0.239
-      last_seen: '2024-03-31T14:39:14+00:00'
-      linkquality: 61
+      last_seen: '2024-11-21T09:36:10+01:00'
+      linkquality: 91
       power_on_behavior: previous
       update:
-        installed_version: 16785162
-        latest_version: 16785162
+        installed_version: 16786690
+        latest_version: 16786690
         state: idle
       update_available:
       friendly_name: Terrasse Spot
       supported_features: 44
       state: 'on'
-  icon: hue:room-terrace
   metadata:
     light.terrasse_leuchtkugel:
       entity_only: true
     light.terrasse_spot:
       entity_only: true
+  icon: phu:rooms-terrace
 - id: '1721556351080'
   name: Wohnzimmer Tag
   entities:

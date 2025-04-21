@@ -45,7 +45,7 @@
     input:
       send_to_ha: true
       reminder_hours: '24'
-      mobile_app_device: 8c8704041f95b4a801662374c49fc21f
+      mobile_app_device: 57cc660bf24ad3bfb911d922985d0096
       mobile_app_device_2: 5b916f6c2a8e3ac7c68cee8a9f0612ff
       update_entities:
       - update.home_assistant_core_update
@@ -206,7 +206,8 @@
       - data: {}
         action: lock.unlock
         target:
-          entity_id: lock.nuki_bridge_haustuer
+          entity_id:
+          - lock.haustur
       - if:
         - condition: sun
           after: sunset
@@ -232,14 +233,19 @@
         id:
         - Abwesend
       sequence:
-      - data: {}
-        target:
-          entity_id: scene.schlafenszeit
-        action: scene.turn_on
+      - if:
+        - condition: state
+          entity_id: input_boolean.marlon_modus
+          state: 'off'
+        then:
+        - data: {}
+          target:
+            entity_id: scene.schlafenszeit
+          action: scene.turn_on
       - data: {}
         target:
           entity_id:
-          - lock.nuki_bridge_haustuer
+          - lock.haustur
         action: lock.lock
       - data: {}
         target:
@@ -330,19 +336,6 @@
         entity_id: 3205dd9bcd0efa2bc13b5bcba721bcec
         domain: light
   mode: single
-- id: '1690218603223'
-  alias: Backup - Full - Every Night
-  description: ''
-  trigger:
-  - platform: time
-    at: 03:03:00
-  condition: []
-  action:
-  - service: auto_backup.backup_full
-    data:
-      keep_days: 7
-      location: Synology_NAS
-  mode: single
 - id: '1690228220678'
   alias: Notification - Fenster/Tür geöffnet
   description: ''
@@ -409,15 +402,15 @@
     path: Blackshome/sensor-light.yaml
     input:
       motion_trigger:
-      - binary_sensor.anwesenheit_sensoren_buro
+      - binary_sensor.buro_bewegungsmelder_occupancy
       light_switch:
         entity_id: scene.buro_tag
       end_scenes:
       - scene.buro_alles_aus
-      time_delay: 1.5
+      time_delay: 2
       include_bypass: bypass_enabled_turn_on
       include_ambient: ambient_enabled
-      ambient_light_sensor: sensor.buro_bewegungsmelder_illuminance_lux
+      ambient_light_sensor: sensor.buro_bewegungsmelder_illuminance
       ambient_light_options: ambient_light_option_enabled
       ambient_light_value: 10
       include_night_lights: night_lights_enabled
@@ -440,33 +433,6 @@
       motion_bypass: input_boolean.licht_buro_bypass
       motion_bypass_lights_on:
       - input_boolean.licht_buro_bypass
-- id: '1691157592844'
-  alias: Licht - HSW Hue Tap
-  description: ''
-  use_blueprint:
-    path: svh1985/z2m-philips-hue-tap-switch.yaml
-    input:
-      dimmer: sensor.waschkueche_schalter_action
-      button_1:
-      - type: toggle
-        device_id: 509d68c8a49eda8556ec96ed8bdb487a
-        entity_id: e5044675b338f2d1b886ad9185b6e6a2
-        domain: switch
-      button_4:
-      - type: toggle
-        device_id: 509d68c8a49eda8556ec96ed8bdb487a
-        entity_id: e5044675b338f2d1b886ad9185b6e6a2
-        domain: switch
-      button_2:
-      - type: toggle
-        device_id: c7e82181252e0c13bc1d6926ec17b000
-        entity_id: 32b7a347b971b25486bea3c6c699aa5e
-        domain: light
-      button_3:
-      - type: toggle
-        device_id: 4ef3b85f601b5354cc6762f0a80cd460
-        entity_id: acfad3aa2375825c0301122013e449b4
-        domain: switch
 - id: '1691158909569'
   alias: Licht - Auffahrt
   description: ''
@@ -481,7 +447,7 @@
       motion_bypass: binary_sensor.auffahrt_etwas_auf
       include_bypass: []
       include_ambient: ambient_enabled
-      ambient_light_sensor: sensor.auffahrt_bewegungsmelder_illuminance_lux
+      ambient_light_sensor: sensor.auffahrt_bewegungsmelder_illuminance
       ambient_light_options: ambient_light_option_disabled
       ambient_light_value: 35
       bypass_time_delay: 0.75
@@ -503,7 +469,7 @@
       include_ambient: ambient_enabled
       ambient_light_sensor: sensor.wohnzimmer_bmw_beleuchtungsstarke
       ambient_light_options: ambient_light_option_enabled
-      ambient_light_value: 5
+      ambient_light_value: 2
       motion_bypass: input_boolean.licht_wohnzimmer_bypass
       include_bypass: bypass_enabled_turn_on
       include_bypass_auto_off: bypass_auto_off_disabled
@@ -516,6 +482,7 @@
       motion_bypass_lights_on:
       - input_boolean.licht_wohnzimmer_bypass
       bypass_time_delay: 0.25
+      ambient_light_high_value: 3
 - id: '1691242530952'
   alias: Roku - Harmony Hub Tasten
   description: ''
@@ -797,33 +764,35 @@
 - id: '1691246057609'
   alias: Licht - Wohnzimmer
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - remote.harmony_hub
-    id: Harmony
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.wohnzimmer_bmw_beleuchtungsstarke
     id: Lichtsensor
-  condition: []
-  action:
+    trigger: state
+  - type: changed_states
+    device_id: 3c188dd62678660180b3c7fbe72fa0b5
+    entity_id: ff67403aea50b386e1ea601b15bd44b5
+    domain: media_player
+    trigger: device
+    id: AVR
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - Harmony
+        - AVR
       sequence:
       - choose:
         - conditions:
           - condition: state
-            entity_id: remote.harmony_hub
+            entity_id: media_player.home_theater
             state: 'on'
           sequence:
-          - service: input_boolean.turn_on
-            data: {}
+          - data: {}
             target:
               entity_id: input_boolean.licht_wohnzimmer_bypass
+            action: input_boolean.turn_on
           - type: turn_on
             device_id: 5dd52aca928925cdcbb25506b63c1eb8
             entity_id: 8ecfdad40bfa5e0746ce55ca0c37d73b
@@ -833,30 +802,26 @@
               before: sunrise
               after: sunset
             then:
-            - service: scene.turn_on
-              data: {}
+            - data: {}
               target:
                 entity_id: scene.wohnzimmer_abends_tv
+              action: scene.turn_on
         - conditions:
           - condition: state
-            entity_id: remote.harmony_hub
+            entity_id: media_player.home_theater
             state: 'off'
-            for:
-              hours: 0
-              minutes: 0
-              seconds: 0
           sequence:
-          - service: input_boolean.turn_off
-            data: {}
+          - data: {}
             target:
               entity_id: input_boolean.licht_wohnzimmer_bypass
             enabled: true
+            action: input_boolean.turn_off
     - conditions:
       - condition: trigger
         id:
         - Lichtsensor
       - condition: state
-        entity_id: remote.harmony_hub
+        entity_id: media_player.home_theater
         state: 'on'
       - condition: sun
         before: sunset
@@ -866,29 +831,26 @@
         - conditions:
           - condition: numeric_state
             entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
-            above: 0.4
+            above: 0.25
           sequence:
           - type: turn_off
             device_id: c63362514c42d9112b345678b7bb22c4
             entity_id: fb568fd70ae4c6d19f9ac33a799a0820
             domain: light
           - type: turn_off
-            device_id: de7197e94a0d1bef2ec930ea9c234e31
-            entity_id: d505cf6ac79696588bc59e7e8779c3a4
-            domain: light
-          - type: turn_off
-            device_id: 279ef68ea0c5a74e292f44af7f332043
-            entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
+            device_id: b1dcc8d31f804c45a194bc06e499aa2b
+            entity_id: ed965fd4b64c4b408c45c2a99705dd62
             domain: light
         - conditions:
           - condition: numeric_state
             entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
-            below: 0.4
+            below: 0.25
           sequence:
-          - service: scene.turn_on
-            target:
+          - target:
               entity_id: scene.wohnzimmer_abends_tv
             metadata: {}
+            action: scene.turn_on
+            data: {}
   mode: single
 - id: '1691254885537'
   alias: Licht - Küche - Schalter
@@ -945,78 +907,49 @@
 - id: '1691346643021'
   alias: Licht - Wohnzimmer Ambilight
   description: ''
-  trigger:
-  - platform: device
-    device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-    domain: select
-    entity_id: 4e3732e26b909cd4f35b796301def542
-    type: current_option_changed
-  - platform: state
-    entity_id:
-    - sensor.wohnzimmer_bmw_beleuchtungsstarke
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - media_player.home_theater
-  condition: []
-  action:
+    trigger: state
+  - entity_id:
+    - sensor.wohnzimmer_bmw_beleuchtungsstarke
+    trigger: state
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: numeric_state
         entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
         below: 0.5
-      - condition: and
-        conditions:
-        - condition: or
-          conditions:
-          - condition: device
-            type: is_on
-            device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-            entity_id: 132911bfbadee2cc73493618141d505a
-            domain: remote
-          - condition: state
-            entity_id: media_player.home_theater
-            state: 'on'
-            enabled: true
+      - condition: state
+        entity_id: media_player.home_theater
+        state: 'on'
+        enabled: true
       sequence:
-      - service: scene.turn_on
-        metadata: {}
+      - metadata: {}
         target:
           entity_id: scene.ambilight_standart
+        action: scene.turn_on
+        data: {}
     - conditions:
-      - condition: and
-        conditions:
-        - condition: numeric_state
-          entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
-          above: 0.5
-        - condition: or
-          conditions:
-          - condition: device
-            type: is_on
-            device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-            entity_id: 132911bfbadee2cc73493618141d505a
-            domain: remote
-          - condition: state
-            entity_id: media_player.home_theater
-            state: 'on'
-            enabled: true
+      - condition: numeric_state
+        entity_id: sensor.wohnzimmer_bmw_beleuchtungsstarke
+        above: 0.5
+      - condition: state
+        entity_id: media_player.home_theater
+        state: 'on'
+        enabled: true
       sequence:
       - type: turn_off
         device_id: 279ef68ea0c5a74e292f44af7f332043
         entity_id: c5b8607bdc1d3285a0d6b0133e6edea5
         domain: light
     - conditions:
-      - condition: and
-        conditions:
-        - condition: device
-          type: is_off
-          device_id: 1a2bbc7cbf3a3e220769e7c6c10b1bb6
-          entity_id: 132911bfbadee2cc73493618141d505a
-          domain: remote
-        - condition: device
-          device_id: 3c188dd62678660180b3c7fbe72fa0b5
-          domain: media_player
-          entity_id: ff67403aea50b386e1ea601b15bd44b5
-          type: is_off
+      - condition: device
+        device_id: 3c188dd62678660180b3c7fbe72fa0b5
+        domain: media_player
+        entity_id: ff67403aea50b386e1ea601b15bd44b5
+        type: is_off
       sequence:
       - delay:
           hours: 0
@@ -1211,7 +1144,7 @@
       - use_transition
       include_ambient: ambient_enabled
       ambient_light_sensor: sensor.hmip_spi_000c20c9abc5de_beleuchtungsstarke
-      ambient_light_value: 15
+      ambient_light_value: 10
       ambient_light_options: ambient_light_option_enabled
       light_switch:
         entity_id: scene.flur_eg_tag
@@ -1232,6 +1165,7 @@
       light_transition_on: 0.6
       motion_bypass_lights_on:
       - input_boolean.licht_bypass_flur_eg
+      ambient_light_high_value: 30
 - id: '1691856116897'
   alias: Licht - Flur Treppe BWM
   description: ''
@@ -1289,52 +1223,37 @@
       entity_id: scene.schlafenszeit
     metadata: {}
     action: scene.turn_on
+    data: {}
   - data: {}
     target:
       entity_id: alarm_control_panel.alarmanlage
     action: alarm_control_panel.alarm_arm_night
+    enabled: false
   - data: {}
     target:
       entity_id:
-      - lock.nuki_bridge_haustuer
+      - lock.haustur
     action: lock.lock
-  mode: single
-- id: '1694025226752'
-  alias: Licht - Gästezimmer - Hue Button
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 4334924b5a39ee1025600c1eb6f30bdc
-    type: action
-    subtype: press
-    discovery_id: 0x0017880106077a17 action_press
-  condition: []
-  action:
-  - type: toggle
-    device_id: c27b1c795ced08c4c425b2344a258833
-    entity_id: 9860d410297b32819e56527e2a8515b9
-    domain: light
   mode: single
 - id: '1694034376577'
   alias: Alarmanlage - iPhone Focus aus
   description: ''
-  trigger:
-  - type: turned_off
-    platform: device
-    device_id: 8c8704041f95b4a801662374c49fc21f
-    entity_id: ca1ae8311ac3b7bb583723d080abf599
-    domain: binary_sensor
-  condition:
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.christians_iphone_focus
+    from: 'on'
+    to: 'off'
+  conditions:
   - condition: zone
     entity_id: person.christian
     zone: zone.home
-  action:
-  - service: alarm_control_panel.alarm_disarm
-    data: {}
+  actions:
+  - data: {}
     target:
       entity_id:
       - alarm_control_panel.alarmanlage
+    action: alarm_control_panel.alarm_disarm
   mode: single
 - id: '1694190883186'
   alias: Licht - Garage
@@ -1393,34 +1312,34 @@
 - id: '1696672597427'
   alias: States - Robbi Entleeren
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - input_button.robbi_goto_entleeren
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - if:
     - condition: state
       entity_id: vacuum.roborock_s7
       state: docked
     then:
-    - service: roborock.vacuum_goto
-      data:
-        x_coord: '24800'
-        y_coord: '27500'
+    - action: roborock.set_vacuum_goto_position
       target:
         entity_id: vacuum.roborock_s7
+      data:
+        x: '24800'
+        y: '27500'
     else:
     - device_id: 79fd01e9b0d0e223fdfb3cbfc54a8531
       domain: vacuum
       entity_id: 4b07570880c15232354030e146cbc9ac
       type: dock
-  - service: input_number.set_value
-    metadata: {}
+  - metadata: {}
     data:
       value: 0
     target:
       entity_id: input_number.robbi_behalter_inhalt
+    action: input_number.set_value
   mode: single
 - id: '1699487323096'
   alias: Licht - Flur OG - Bypass reset
@@ -1438,48 +1357,6 @@
     data: {}
     target:
       entity_id: input_boolean.licht_bypass_flur_og
-  mode: single
-- id: '1701329727014'
-  alias: States - Harmony Hub Activities
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - select.harmony_hub_activities
-    from:
-    id: Harmony Hub
-  - platform: state
-    entity_id:
-    - input_select.harmony_hub
-    from:
-    id: Harmony Hub Helper
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - Harmony Hub
-      sequence:
-      - service: input_select.select_option
-        data:
-          option: "{% if is_state(\"select.harmony_hub_activities\", \"power_off\")
-            -%}\n  {{\"Ausschalten\"}}\n{%- else -%}\n {{states('select.harmony_hub_activities')}}\n{%-
-            endif %}"
-        target:
-          entity_id: input_select.harmony_hub
-    - conditions:
-      - condition: trigger
-        id:
-        - Harmony Hub Helper
-      sequence:
-      - service: select.select_option
-        data:
-          option: "{% if is_state(\"input_select.harmony_hub\", \"Ausschalten\") -%}\n
-            \ {{\"power_off\"}}\n{%- else -%}\n {{ states('input_select.harmony_hub')
-            }}\n{%- endif %}"
-        target:
-          entity_id: select.harmony_hub_activities
   mode: single
 - id: '1701431072804'
   alias: Licht - Außen Weihnachtsbeleuchtung
@@ -1534,75 +1411,42 @@
 - id: '1703334058878'
   alias: Strom - Automatische Preisänderung
   description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.strom_preisanderungsdatum
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
+  triggers:
+  - at: input_datetime.strom_preisanderungsdatum
+    trigger: time
+  conditions: []
+  actions:
+  - target:
       entity_id: input_number.strompreis
     data:
       value: '{{ states(''input_number.strom_neuer_preis_kwh'') | float }}'
     enabled: true
-  - service: notify.christian_iphone
-    data:
+    action: input_number.set_value
+  - data:
       message: 'Strompreis wurde angepasst. Neuer Preis: {{ states(''input_number.strom_neuer_preis_kwh'')
         | float }} €'
       title: "Sweet Home \U0001F3E1"
+    action: notify.mobile_app_christians_iphone
   mode: single
 - id: '1703495288851'
   alias: Gas - Automatische Preisänderung
   description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.gas_preisanderungsdatum
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
+  triggers:
+  - at: input_datetime.gas_preisanderungsdatum
+    trigger: time
+  conditions: []
+  actions:
+  - target:
       entity_id: input_number.gaspreis
     data:
       value: '{{ states(''input_number.gas_neuer_preis_kwh'') | float }}'
     enabled: true
-  - service: notify.christian_iphone
-    data:
+    action: input_number.set_value
+  - data:
       message: 'Gaspreis wurde angepasst. Neuer Preis: {{ states(''input_number.gas_neuer_preis_kwh'')
         | float }} €'
       title: "Sweet Home \U0001F3E1"
-  mode: single
-- id: '1707690408959'
-  alias: Licht - Aufwachen Arbeit
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.christians_iphone_focus
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: zone
-    entity_id: person.christian
-    zone: zone.home
-  - condition: state
-    entity_id: calendar.schichtplan
-    state: 'on'
-  - condition: state
-    entity_id: calendar.schichtplan
-    state: Arbeit
-    attribute: message
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  action:
-  - type: turn_on
-    device_id: c27b1c795ced08c4c425b2344a258833
-    entity_id: aa7173183dc864112e9fa215fd691505
-    domain: switch
+    action: notify.mobile_app_christians_iphone
   mode: single
 - id: '1712429461281'
   alias: Low Battery Notifications & Actions
@@ -1650,48 +1494,6 @@
         }} Rasperrymatic Servicemeldungen\n{% endif %}"
       message: '{{ states.sensor.raspberrymatic_sv_servicemeldung_text.state }}'
   mode: single
-- id: '1714416837775'
-  alias: Arbeitsschicht
-  description: Schalte alles aus/ein während Arbeitsschicht
-  trigger:
-  - platform: state
-    entity_id:
-    - person.christian
-    to: Abwesend
-    id: Verlässt
-  - platform: zone
-    entity_id: device_tracker.christians_iphone
-    zone: zone.home
-    event: enter
-    id: Betreten
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - Verlässt
-      - condition: state
-        entity_id: calendar.schichtplan
-        state: 'on'
-      sequence:
-      - target:
-          entity_id: input_boolean.arbeitsschicht
-        data: {}
-        action: input_boolean.turn_on
-    - conditions:
-      - condition: trigger
-        id:
-        - Betreten
-      - condition: state
-        entity_id: input_boolean.arbeitsschicht
-        state: 'on'
-      sequence:
-      - target:
-          entity_id: input_boolean.arbeitsschicht
-        data: {}
-        action: input_boolean.turn_off
-  mode: single
 - id: '1715621926054'
   alias: Alarmanlage - Abwesend zu Anwesend (scharf)
   description: Wenn Saugroboter starten um BWM nicht auszulösen
@@ -1735,79 +1537,18 @@
 - id: '1719090111515'
   alias: Benachrichtigung - Saugroboter Behälter leeren
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
+  triggers:
+  - entity_id:
     - input_number.robbi_behalter_inhalt
     above: 2
-  condition: []
-  action:
-  - service: notify.christian_iphone
-    metadata: {}
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - metadata: {}
     data:
       title: "Sweet Home \U0001F3E1"
       message: Saugroboter Behälter sollten geleert werden.
-  mode: single
-- id: '1721227471206'
-  alias: Raum Media Dropdown iPhone
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.christian_iphone_area
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: sensor.christian_iphone_area
-        attribute: area_name
-        state: Wohnzimmer
-      sequence:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.media_select_room
-        data:
-          option: Wohnzimmer
-    - conditions:
-      - condition: state
-        entity_id: sensor.christian_iphone_area
-        attribute: area_name
-        state: Küche
-      sequence:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.media_select_room
-        data:
-          option: Küche
-    - conditions:
-      - condition: state
-        entity_id: sensor.christian_iphone_area
-        attribute: area_name
-        state: Büro
-      sequence:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.media_select_room
-        data:
-          option: Büro
-    - conditions:
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.christian_iphone_area
-          attribute: area_name
-          state: Küche
-        - condition: state
-          entity_id: sensor.christian_iphone_area
-          attribute: area_name
-          state: Büro
-      sequence:
-      - service: input_select.select_option
-        target:
-          entity_id: input_select.media_select_room
-        data:
-          option: Wohnzimmer
+    action: notify.mobile_app_christians_iphone
   mode: single
 - id: '1724578250535'
   alias: Stromsparmodus
@@ -1879,7 +1620,7 @@
       end_message: Die Waschmaschine ist fertig!
       end_message_title: "Sweet Home \U0001F3E1"
       end_notify_device:
-      - 8c8704041f95b4a801662374c49fc21f
+      - 57cc660bf24ad3bfb911d922985d0096
       include_end_notify: enable_end_notify_options
       include_custom_actions:
       - enable_start_custom_actions
@@ -1905,9 +1646,11 @@
       power_sensor: sensor.trockner_power
       include_end_notify: enable_end_notify_options
       end_notify_device:
-      - 8c8704041f95b4a801662374c49fc21f
+      - 57cc660bf24ad3bfb911d922985d0096
       end_message: Der Trockner ist fertig.
       end_message_title: "Sweet Home \U0001F3E1"
+      start_time_delay: 3
+      end_repeat_count: 2
 - id: '1725204110417'
   alias: Geschirrspüler Benachrichtigung
   description: ''
@@ -1920,7 +1663,7 @@
       end_repeat_count: 1
       include_end_notify: enable_end_notify_options
       end_notify_device:
-      - 8c8704041f95b4a801662374c49fc21f
+      - 57cc660bf24ad3bfb911d922985d0096
       end_message_title: "Sweet Home \U0001F3E1"
       end_message: Der Geschirrspühler ist fertig!
 - id: '1725218615130'
@@ -2010,16 +1753,12 @@
     from: 'off'
     to: 'on'
     trigger: state
-  - value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
-      | select(''is_state'', ''on'') | list | count > 0 }}'
-    id: update_check
-    enabled: true
-    trigger: template
-  - value_template: '{{ selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
-      | select(''in'', integration_entities(''esphome'')) | list | count == 0 }}'
-    id: up-to-date
-    enabled: true
-    trigger: template
+  - trigger: state
+    entity_id:
+    - sensor.esphome_update_available
+    from: 'True'
+    to: 'False'
+    id: Template keine Updates mehr
   - event_type: timer.finished
     event_data:
       entity_id: timer.esphome_updates_timer
@@ -2031,23 +1770,17 @@
     - conditions:
       - condition: trigger
         id:
-        - update_check
         - 'Switch to start update '
-      - condition: template
-        value_template: "{% set entities = states.update | \n    selectattr('state',
-          'eq', 'on') |\n    map(attribute='entity_id') | \n    select('in', integration_entities('esphome'))
-          |\n    list | count\n%} \n\n{{ entities > 0 }}"
-        alias: Confirm something needs to be updated still
+      - alias: Confirm something needs to be updated still
+        condition: template
+        value_template: "{{ \n  states.update | \n  selectattr('state', 'eq', 'on')
+          | \n  map(attribute='entity_id') | \n  select('in', integration_entities('esphome'))
+          | \n  list | count > 0\n}}"
       - condition: state
         entity_id: input_boolean.update_esphome
         state: 'on'
       sequence:
-      - action: timer.start
-        data:
-          duration: 0
-        target:
-          entity_id: timer.esphome_updates_timer
-      - action: notify.christian_iphone
+      - action: notify.mobile_app_christians_iphone
         data:
           title: ESPHome Devices
           message: "{% set entity = states.update | \n    selectattr('state', 'eq',
@@ -2060,46 +1793,57 @@
           for_each: "{{ states.update |\n    selectattr('state', 'eq', 'on') |\n    map(attribute='entity_id')
             | \n    select('in', integration_entities('esphome')) | \n    list\n}}"
           sequence:
+          - action: timer.start
+            data:
+              duration: 0
+            target:
+              entity_id: timer.esphome_updates_timer
           - target:
               entity_id: '{{ repeat.item }}'
             action: update.install
           - wait_template: '{{ is_state(repeat.item, ''off'') }}'
+          - action: timer.cancel
+            target:
+              entity_id: timer.esphome_updates_timer
+            data: {}
     - conditions:
       - condition: trigger
-        id: up-to-date
-      - alias: Confirm all are updated
-        condition: template
-        value_template: '{{ selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
-          | select(''in'', integration_entities(''esphome'')) | list | count == 0
-          }}'
+        id:
+        - Template keine Updates mehr
       sequence:
       - action: timer.cancel
-        data: {}
         target:
           entity_id: timer.esphome_updates_timer
-      - action: notify.christian_iphone
-        data:
-          title: ESPHome Devices
-          message: "{% set entity = states.update | \n    selectattr('state', 'eq',
-            'on') |\n    map(attribute='entity_id') | \n    select('in', integration_entities('esphome'))
-            | \n    first\n%} \nYour ESPHome devices are now all updated to {{ state_attr(entity,
-            \"latest_version\") }}."
+        data: {}
+        enabled: true
       - action: input_boolean.turn_off
         metadata: {}
         data: {}
         target:
           entity_id: input_boolean.update_esphome
+      - action: notify.mobile_app_christians_iphone
+        data:
+          title: ESPHome Devices
+          message: "{% set entity = states.update | \n    selectattr('state', 'eq',
+            'off') |\n    map(attribute='entity_id') | \n    select('in', integration_entities('esphome'))
+            | \n    first\n%} \nYour ESPHome devices are now all updated to {{ state_attr(entity,
+            \"latest_version\") }}."
     - conditions:
       - condition: trigger
         id: esphome_timer_updates_finished
       sequence:
-      - action: notify.christian_iphone
+      - action: notify.mobile_app_christians_iphone
         data:
           title: ESPHome Devices
           message: "{% set entity = states.update | \n    selectattr('state', 'eq',
             'on') |\n    map(attribute='entity_id') | \n    select('in', integration_entities('esphome'))
             | \n    first\n%}  There was a problem updating to {{ state_attr(entity,
             \"latest_version\")  }}. Please check your ESPHome Addon."
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.update_esphome
   mode: single
 - id: '1731093150516'
   alias: Button Haustür nur in Zone
@@ -2117,7 +1861,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: lock.nuki_bridge_haustuer
+      entity_id: lock.haustur
   mode: single
 - id: '1731536571734'
   alias: Licht Küche Vorratsraum Test
@@ -2148,7 +1892,7 @@
           id:
           - Bewegung
         - condition: numeric_state
-          entity_id: sensor.kuche_vorratsraum_bwm_illuminance_lux
+          entity_id: sensor.kuche_vorratsraum_bwm_illuminance
           below: 20
       sequence:
       - action: switch.turn_on
@@ -2201,9 +1945,14 @@
         id:
         - Bewegung
         - Tür auf
-      - condition: numeric_state
-        entity_id: sensor.hmip_spi_000c20c9abc3f3_beleuchtungsstarke
-        below: 15
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.hmip_spi_000c20c9abc3f3_beleuchtungsstarke
+          below: 15
+        - condition: sun
+          before: sunrise
+          after: sunset
       sequence:
       - action: switch.turn_on
         metadata: {}
@@ -2223,4 +1972,378 @@
         data: {}
         target:
           entity_id: switch.hsw_deckenlicht
+  mode: single
+- id: '1734095188826'
+  alias: Licht Dachboden
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.dachbodenluke
+    from: 'off'
+    to: 'on'
+    id: Luke wird Geöffnet
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - trigger: state
+    entity_id:
+    - binary_sensor.dachbodenluke
+    from: 'on'
+    to: 'off'
+    id: Luke wird Geschlossen
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Luke wird Geöffnet
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.dachboden_licht
+    - conditions:
+      - condition: trigger
+        id:
+        - Luke wird Geschlossen
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.dachboden_licht
+  mode: single
+- id: '1734283603006'
+  alias: Warmwasserpumpe
+  description: ''
+  triggers:
+  - trigger: time
+    at:
+      entity_id: input_datetime.iphonewakeup
+      offset: 00:20:00
+    id: Einschaltzeit
+  - trigger: time
+    at: input_datetime.zirkulationspumpe_ausschaltzeit
+    id: Ausschaltzeit
+  - trigger: state
+    entity_id:
+    - sensor.christians_iphone_battery_state
+    from: Not Charging
+    to: Charging
+    id: iPhone Nachtzeit
+  - trigger: state
+    entity_id:
+    - person.christian
+    id: Anwesenheit
+    from: not_home
+    to: home
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Ausschaltzeit
+      - condition: state
+        entity_id: person.christian
+        state: not_home
+      - condition: state
+        entity_id: input_boolean.urlaubsmodus
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.gastemodus
+        state: 'off'
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.warmwasser_umwalzpumpe
+    - conditions:
+      - condition: trigger
+        id:
+        - iPhone Nachtzeit
+      - condition: state
+        entity_id: person.christian
+        state: home
+      - condition: time
+        after: '21:00:00'
+        before: 05:00:00
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.warmwasser_umwalzpumpe
+    - conditions:
+      - condition: trigger
+        id:
+        - Einschaltzeit
+      - condition: state
+        entity_id: person.christian
+        state: home
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.warmwasser_umwalzpumpe
+    - conditions:
+      - condition: trigger
+        id:
+        - Anwesenheit
+      - condition: state
+        entity_id: input_boolean.urlaubsmodus
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.gastemodus
+        state: 'off'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: person.christian
+            state: not_home
+            for:
+              hours: 0
+              minutes: 5
+              seconds: 0
+          sequence:
+          - action: switch.turn_off
+            metadata: {}
+            data: {}
+            target:
+              entity_id: switch.warmwasser_umwalzpumpe
+        - conditions:
+          - condition: state
+            entity_id: person.christian
+            state: home
+          sequence:
+          - action: switch.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: switch.warmwasser_umwalzpumpe
+  mode: single
+- id: '1737998415014'
+  alias: Rollläden Urlaubsmodus
+  description: Fahre Rollläden im Urlaubs/Schichtmodus bei Sonnenunter.- Aufgang automatisch
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: Sonne aufgeht
+  - trigger: sun
+    event: sunset
+    offset: 0
+    id: Sonne untergeht
+  conditions:
+  - condition: state
+    entity_id: input_boolean.urlaubsmodus
+    state: 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Sonne untergeht
+      sequence:
+      - action: cover.close_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.hmip_broll_2_0036a0c994acdc
+    - conditions:
+      - condition: trigger
+        id:
+        - Sonne aufgeht
+      sequence:
+      - action: cover.open_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.hmip_broll_2_0036a0c994acdc
+  mode: single
+- id: '1738770107565'
+  alias: Aufwachen Schlafzimmer
+  description: ''
+  triggers:
+  - trigger: time
+    at: input_datetime.iphonewakeup
+  conditions:
+  - condition: state
+    entity_id: input_boolean.iphone_alarm_status
+    state: 'on'
+  - condition: state
+    entity_id: person.christian
+    state: home
+  actions:
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.hmip_broll_2_0036a0c994acdc
+  - if:
+    - condition: sun
+      before: sunrise
+      after: sunset
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.schlafzimmer_stehlampe
+  mode: single
+- id: '1738835967288'
+  alias: Garage ist offen
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - cover.garage_door
+    to: open
+    from: closed
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  conditions: []
+  actions:
+  - data:
+      title: "Sweet Home \U0001F3E1"
+      message: Die Garage ist noch offen (bitte gedrückt halten)
+      data:
+        actions:
+        - action: CLOSE_GARAGE
+          title: Garage schließen
+          icon: sfsymbols:square.and.arrow.down
+    action: notify.notify
+  - wait_for_trigger:
+    - event_type: mobile_app_notification_action
+      event_data:
+        action: CLOSE_GARAGE
+      trigger: event
+    timeout:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+    continue_on_timeout: false
+  - data: {}
+    target:
+      entity_id: cover.garage_door
+    action: cover.close_cover
+  mode: single
+- id: '1739100287620'
+  alias: Battery Notes - Battery Not Reported
+  description: ''
+  use_blueprint:
+    path: andrew-codechimp/battery_notes_battery_not_reported.yaml
+    input:
+      excluded_devices:
+      - null
+      user_actions: []
+- id: '1739223981965'
+  alias: Battery Notes - Battery Threshold
+  description: ''
+  use_blueprint:
+    path: andrew-codechimp/battery_notes_battery_threshold.yaml
+    input:
+      excluded_devices:
+      - null
+- id: '1744618679234'
+  alias: Kamera Aufnahme Modus
+  description: 'Stelle Kamera Aufnahmemodus auf Bewegung wenn Abwesend oder Nacht.
+    Bei Anwesenheit & Tag stelle Kamera Aufnahme Modus auf aus. '
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.nachtzeit
+    from: '0'
+    to: '1'
+    id: Nachtzeit
+  - trigger: state
+    entity_id:
+    - sensor.nachtzeit
+    from: '1'
+    to: '0'
+    id: Tagzeit
+  - trigger: zone
+    entity_id: person.christian
+    zone: zone.home
+    event: enter
+    id: Anwesend
+  - trigger: zone
+    entity_id: person.christian
+    zone: zone.home
+    event: leave
+    id: Abwesend
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Tagzeit
+      - condition: zone
+        entity_id: person.christian
+        zone: zone.home
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Never
+        target:
+          entity_id:
+          - select.garage_recording_mode
+          - select.hintereingang_recording_mode
+    - conditions:
+      - condition: trigger
+        id:
+        - Nachtzeit
+      - condition: zone
+        entity_id: person.christian
+        zone: zone.home
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Detections
+        target:
+          entity_id:
+          - select.garage_recording_mode
+          - select.hintereingang_recording_mode
+    - conditions:
+      - condition: trigger
+        id:
+        - Anwesend
+      - condition: state
+        entity_id: sensor.nachtzeit
+        state: '0'
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Never
+        target:
+          entity_id:
+          - select.garage_recording_mode
+          - select.hintereingang_recording_mode
+    - conditions:
+      - condition: trigger
+        id:
+        - Abwesend
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Detections
+        target:
+          entity_id:
+          - select.garage_recording_mode
+          - select.hintereingang_recording_mode
   mode: single

@@ -17,15 +17,15 @@
           {% endif %}      
         {% endif %}
       open_cover:
-        service: switch.turn_on
+        action: switch.turn_on
         data:
           entity_id: switch.garagentor
       close_cover:
-        service: switch.turn_on
+        action: switch.turn_on
         data:
           entity_id: switch.garagentor
       stop_cover:
-        service: switch.turn_on
+        action: switch.turn_on
         data:
           entity_id: switch.garagentor
       icon_template: >

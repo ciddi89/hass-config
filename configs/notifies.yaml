@@ -1,7 +1,0 @@
-# telegram group
-  - platform: group
-    name: christian_iphone
-    services:
-      - service: mobile_app_christians_iphone
-        data:
-          title: Sicherheitssystem

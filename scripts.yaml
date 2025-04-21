@@ -1,0 +1,29 @@
+aufwachen_schlafzimmer:
+  sequence:
+  - if:
+    - condition: zone
+      entity_id: person.christian
+      zone: zone.home
+    then:
+    - action: cover.open_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+    - if:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      then:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.schlafzimmer_stehlampe
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.warmwasser_umwalzpumpe
+  alias: Aufwachen Schlafzimmer
+  description: ''

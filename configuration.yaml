@@ -4,9 +4,7 @@ default_config:
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
-  extra_module_url:
-    - /local/hass-hue-icons.js
-
+  
 # Text-to-speech
 tts:
   - platform: google_translate
@@ -25,10 +23,7 @@ scene: !include scenes.yaml
 script: !include scripts.yaml
 
 # Manuel includes
-alert: !include configs/alerts.yaml
 camera: !include configs/cameras.yaml
 cover: !include configs/covers.yaml
 mqtt: !include configs/mqtt.yaml
-notify: !include configs/notifies.yaml
-vacuum: !include configs/vacuums.yaml
 command_line: !include configs/command_line.yaml
