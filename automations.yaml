@@ -2238,23 +2238,6 @@
       entity_id: cover.garage_door
     action: cover.close_cover
   mode: single
-- id: '1739100287620'
-  alias: Battery Notes - Battery Not Reported
-  description: ''
-  use_blueprint:
-    path: andrew-codechimp/battery_notes_battery_not_reported.yaml
-    input:
-      excluded_devices:
-      - null
-      user_actions: []
-- id: '1739223981965'
-  alias: Battery Notes - Battery Threshold
-  description: ''
-  use_blueprint:
-    path: andrew-codechimp/battery_notes_battery_threshold.yaml
-    input:
-      excluded_devices:
-      - null
 - id: '1744618679234'
   alias: Kamera Aufnahme Modus
   description: 'Stelle Kamera Aufnahmemodus auf Bewegung wenn Abwesend oder Nacht.
@@ -2346,4 +2329,35 @@
           entity_id:
           - select.garage_recording_mode
           - select.hintereingang_recording_mode
+  mode: single
+- id: '1747036832776'
+  alias: Test Garagew
+  description: ''
+  triggers:
+  - domain: homematicip_local
+    device_id: b5a28ce641f7470e715d1cd2c18a5979
+    event_type: homematic.keypress
+    address: 00255D89B208AE
+    model: HmIP-FSI16
+    interface_id: RaspberryMatic-HmIP-RF
+    type: press_long_release
+    subtype: 1
+    trigger: device
+  conditions: []
+  actions:
+  - action: switch.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.garagenlicht
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: switch.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.garagenlicht
   mode: single
