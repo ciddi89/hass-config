@@ -124,15 +124,15 @@
 - id: '1688840530518'
   alias: Notification - Temperatur Aussen Innen
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.boiler_outside_temperatur
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: person.christian
     state: home
-  action:
+  actions:
   - if:
     - condition: state
       entity_id: input_boolean.helfer_temperatur_a_h_i
@@ -141,23 +141,24 @@
       value_template: '{{ (states(''sensor.boiler_room_temperatur'') | float - states(''sensor.boiler_outside_temperatur'')
         | float) >= 1.5 }}'
     then:
-    - service: input_boolean.turn_off
-      data: {}
+    - data: {}
       target:
         entity_id: input_boolean.helfer_temperatur_a_h_i
-    - service: notify.mobile_app_christians_iphone
-      data:
+      action: input_boolean.turn_off
+    - data:
         title: "Sweet Home \U0001F3E1"
-        message: Außentemperatur({{states.sensor.boiler_outside_temperatur.state}}°C)
-          ist niedriger als Innentemperatur({{states.sensor.boiler_room_temperatur.state}}°C)
+        message: "Außentemperatur({{states.sensor.boiler_outside_temperatur.state}}°C)
+          ist niedriger als Innentemperatur({{states.sensor.boiler_room_temperatur.state}}°C).
+          Lüften wäre jetzt gut! \U0001F4A8"
+      action: notify.mobile_app_christians_iphone
     else:
     - condition: numeric_state
       entity_id: sensor.boiler_outside_temperatur
       above: sensor.boiler_room_temperatur
-    - service: input_boolean.turn_on
-      data: {}
+    - data: {}
       target:
         entity_id: input_boolean.helfer_temperatur_a_h_i
+      action: input_boolean.turn_on
   mode: single
 - id: '1689530556005'
   alias: Anwesenheit - Ankommen / Verlassen
@@ -292,16 +293,16 @@
 - id: '1689951494669'
   alias: Licht - Terrasse Sonnenuntergang
   description: ''
-  trigger:
-  - platform: sun
-    event: sunset
+  triggers:
+  - event: sunset
     offset: 0
     id: Sonnenuntergang
-  - platform: time
-    at: 00:00:00
+    trigger: sun
+  - at: 00:00:00
     id: 0 Uhr
-  condition: []
-  action:
+    trigger: time
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
@@ -312,12 +313,19 @@
         target:
           entity_id: scene.terrasse_abend
         action: scene.turn_on
+        data: {}
       - action: light.turn_on
         metadata: {}
         data:
           brightness_pct: 25
         target:
           entity_id: light.terrasse_leuchtkugel
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.terrasse_brunnen_taster_eg_wz_terr_brunnen_taster
+        enabled: false
     - conditions:
       - condition: trigger
         id:
@@ -442,7 +450,8 @@
       motion_trigger:
       - binary_sensor.auffahrt_etwas_auf
       light_switch:
-        entity_id: light.auffahrt_licht
+        entity_id:
+        - switch.shelly1pmg4_a085e3bbb180_auffahrt_licht
       time_delay: 0.75
       motion_bypass: binary_sensor.auffahrt_etwas_auf
       include_bypass: []
@@ -775,6 +784,12 @@
     domain: media_player
     trigger: device
     id: AVR
+  - type: changed_states
+    device_id: 5dc0a520e18b6d73261c180c406f43f9
+    entity_id: 356a9f9ae4d1a2dc8a117514e5acb086
+    domain: media_player
+    trigger: device
+    id: TV
   conditions: []
   actions:
   - choose:
@@ -782,12 +797,18 @@
       - condition: trigger
         id:
         - AVR
+        - TV
       sequence:
       - choose:
         - conditions:
-          - condition: state
-            entity_id: media_player.home_theater
-            state: 'on'
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: remote.tv_samsung_led55
+              state: 'on'
+            - condition: state
+              entity_id: media_player.home_theater
+              state: 'on'
           sequence:
           - data: {}
             target:
@@ -820,12 +841,17 @@
       - condition: trigger
         id:
         - Lichtsensor
-      - condition: state
-        entity_id: media_player.home_theater
-        state: 'on'
       - condition: sun
         before: sunset
         after: sunrise
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: remote.tv_samsung_led55
+          state: 'on'
+        - condition: state
+          entity_id: media_player.home_theater
+          state: 'on'
       sequence:
       - choose:
         - conditions:
@@ -1266,6 +1292,13 @@
       light_switch:
         entity_id: switch.garagenlicht
       time_delay: 0.75
+      include_bypass:
+      - bypass_enabled_stop
+      motion_bypass_lights_stop:
+      - input_boolean.licht_garage_bypass
+      bypass_auto_off_delay: 30
+      include_bypass_auto_off:
+      - bypass_auto_off_enabled_stop
 - id: '1694645248760'
   alias: Notification - Saugroboter fertig
   description: ''
@@ -1572,7 +1605,7 @@
           - switch.steckdose_surround
           - switch.kuche_steckdose_tv
           - switch.0x0017880108e6f15d
-          - switch.gastezimmer_steckdose_tv
+          - switch.schlafzimmer_steckdose_tv
           - switch.kuche_media_steckdose
           - switch.wohnzimmer_tv_steckdose
           - switch.wohnzimmer_robby_steckdose
@@ -1594,7 +1627,7 @@
           - switch.steckdose_surround
           - switch.kuche_steckdose_tv
           - switch.0x0017880108e6f15d
-          - switch.gastezimmer_steckdose_tv
+          - switch.schlafzimmer_steckdose_tv
           - switch.kuche_media_steckdose
           - switch.wohnzimmer_tv_steckdose
           - switch.wohnzimmer_robby_steckdose
@@ -1891,9 +1924,14 @@
         - condition: trigger
           id:
           - Bewegung
-        - condition: numeric_state
-          entity_id: sensor.kuche_vorratsraum_bwm_illuminance
-          below: 20
+        - condition: or
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.kuche_vorratsraum_bwm_illuminance
+            below: 20
+          - condition: state
+            entity_id: sensor.nachtzeit
+            state: '1'
       sequence:
       - action: switch.turn_on
         metadata: {}
@@ -2283,7 +2321,7 @@
         target:
           entity_id:
           - select.garage_recording_mode
-          - select.hintereingang_recording_mode
+          - select.hintereingang_aufnahmemodus
     - conditions:
       - condition: trigger
         id:
@@ -2299,7 +2337,7 @@
         target:
           entity_id:
           - select.garage_recording_mode
-          - select.hintereingang_recording_mode
+          - select.hintereingang_aufnahmemodus
     - conditions:
       - condition: trigger
         id:
@@ -2315,7 +2353,7 @@
         target:
           entity_id:
           - select.garage_recording_mode
-          - select.hintereingang_recording_mode
+          - select.hintereingang_aufnahmemodus
     - conditions:
       - condition: trigger
         id:
@@ -2328,10 +2366,166 @@
         target:
           entity_id:
           - select.garage_recording_mode
-          - select.hintereingang_recording_mode
+          - select.hintereingang_aufnahmemodus
   mode: single
-- id: '1747036832776'
-  alias: Test Garagew
+- id: '1748894038816'
+  alias: Licht - Schlafzimmer - Bypass reset
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.schlafzimmer_stehlampe
+    to: 'off'
+  conditions: []
+  actions:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.licht_schlafzimmer_bypass
+  mode: single
+- id: '1748894485750'
+  alias: Schlazimmer - Licht - Bypass
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.licht_schlafzimmer_bypass
+    from: 'off'
+    to: 'on'
+    id: Bypass Ein
+  - trigger: state
+    entity_id:
+    - input_boolean.licht_schlafzimmer_bypass
+    from: 'on'
+    to: 'off'
+    id: Bypass Aus
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Bypass Ein
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 10
+        target:
+          entity_id: light.schlafzimmer_stehlampe
+    - conditions:
+      - condition: trigger
+        id:
+        - Bypass Aus
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.schlafzimmer_stehlampe
+  mode: single
+- id: '1748965744506'
+  alias: Schlafzimmer - Nachtlicht BWM
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.schlafzimmer_bett_bwm_gruppe
+    id: Bewegung
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.schlafzimmer_bett_bwm_gruppe
+    id: Keine Bewegung
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
+  conditions:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.nachtzeit
+      state: '1'
+    - condition: state
+      entity_id: cover.hmip_broll_2_0036a0c994acdc
+      state: closed
+  - condition: state
+    entity_id: input_boolean.licht_schlafzimmer_bypass
+    state: 'off'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Bewegung
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 5
+        target:
+          entity_id: light.schlafzimmer_stehlampe_1
+    - conditions:
+      - condition: trigger
+        id:
+        - Keine Bewegung
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.schlafzimmer_stehlampe_1
+  mode: single
+- id: '1748966050368'
+  alias: Terrasse - Licht - BWM
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.terrasse_bewegungsmelder_occupancy
+    to: 'on'
+    id: Bewegung
+  - trigger: state
+    entity_id:
+    - binary_sensor.terrasse_bewegungsmelder_occupancy
+    to: 'off'
+    id: Keine Bewegung
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 30
+  conditions:
+  - condition: state
+    entity_id: sensor.nachtzeit
+    state: '1'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Bewegung
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.terrasse_licht
+    - conditions:
+      - condition: trigger
+        id:
+        - Keine Bewegung
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.terrasse_licht
+  mode: single
+- id: '1751104646106'
+  alias: Garagenlicht Bypass
   description: ''
   triggers:
   - domain: homematicip_local
@@ -2340,12 +2534,17 @@
     address: 00255D89B208AE
     model: HmIP-FSI16
     interface_id: RaspberryMatic-HmIP-RF
-    type: press_long_release
+    type: press_long_start
     subtype: 1
     trigger: device
   conditions: []
   actions:
-  - action: switch.toggle
+  - action: input_boolean.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.licht_garage_bypass
+  - action: switch.turn_off
     metadata: {}
     data: {}
     target:
@@ -2353,11 +2552,69 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 5
-      milliseconds: 0
-  - action: switch.toggle
+      seconds: 0
+      milliseconds: 500
+  - action: switch.turn_on
     metadata: {}
     data: {}
     target:
       entity_id: switch.garagenlicht
+  mode: single
+- id: '1751133591083'
+  alias: Schlafzimmer Lüften - Rollo zu
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.schlafzimmer_fenster_contact
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    id: Fenster geht auf
+  conditions:
+  - condition: state
+    entity_id: cover.hmip_broll_2_0036a0c994acdc
+    state: closed
+  actions:
+  - action: cover.set_cover_position
+    metadata: {}
+    data:
+      position: 20
+    target:
+      entity_id: cover.hmip_broll_2_0036a0c994acdc
+  - wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - binary_sensor.schlafzimmer_fenster_contact
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
+    - trigger: numeric_state
+      entity_id:
+      - cover.hmip_broll_2_0036a0c994acdc
+      above: 50
+      attribute: current_position
+    continue_on_timeout: false
+    timeout:
+      hours: 8
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - if:
+    - condition: numeric_state
+      entity_id: cover.hmip_broll_2_0036a0c994acdc
+      below: 21
+      attribute: current_position
+    then:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
   mode: single

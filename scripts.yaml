@@ -27,3 +27,123 @@ aufwachen_schlafzimmer:
         entity_id: switch.warmwasser_umwalzpumpe
   alias: Aufwachen Schlafzimmer
   description: ''
+haustur_offnen:
+  sequence:
+  - condition: state
+    entity_id: sensor.home_christian_fahrtrichtung
+    state: arrived
+  - action: lock.open
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.haustur
+  alias: Haustür Öffnen
+  description: Öffne die Haustür nur wenn jemand in der Home Zone ist.
+robbi_entleeren:
+  sequence:
+  - if:
+    - condition: state
+      entity_id: vacuum.roborock_s7
+      state: docked
+    then:
+    - action: roborock.set_vacuum_goto_position
+      target:
+        entity_id: vacuum.roborock_s7
+      data:
+        x: '24800'
+        y: '27500'
+    else:
+    - device_id: 79fd01e9b0d0e223fdfb3cbfc54a8531
+      domain: vacuum
+      entity_id: 4b07570880c15232354030e146cbc9ac
+      type: dock
+  - metadata: {}
+    data:
+      value: 0
+    target:
+      entity_id: input_number.robbi_behalter_inhalt
+    action: input_number.set_value
+  alias: Robbi Entleeren
+  description: Fahre zur Entleerungsposition oder zur Ladestation und setze Zähler
+    zurück
+robby_start:
+  sequence:
+  - action: vacuum.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: vacuum.roborock_s7
+  alias: Robby Start
+  description: ''
+schaumi_start:
+  sequence:
+  - action: vacuum.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: vacuum.schaumi
+  alias: Schaumi Start
+  description: ''
+schlafzimmer_rolladen_offnen_steuerung:
+  sequence:
+  - if:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+        state: closing
+      - condition: state
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+        state: opening
+    then:
+    - action: cover.stop_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+    else:
+    - action: cover.open_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+  alias: Schlafzimmer Rolladen - Öffnen Steuerung
+  description: Wenn Rolladen fährt stoppen ansonsten öffnen
+schlafzimmer_rolladen_zu_steuerung:
+  sequence:
+  - if:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+        state: closing
+      - condition: state
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+        state: opening
+    then:
+    - action: cover.stop_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.hmip_broll_2_0036a0c994acdc
+    else:
+    - if:
+      - condition: state
+        entity_id: binary_sensor.schlafzimmer_fenster_contact
+        state: 'on'
+      then:
+      - action: cover.set_cover_position
+        metadata: {}
+        data:
+          position: 20
+        target:
+          entity_id: cover.hmip_broll_2_0036a0c994acdc
+      else:
+      - action: cover.close_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.hmip_broll_2_0036a0c994acdc
+  alias: Schlafzimmer Rolladen - Zu Steuerung
+  description: Wenn Rolladen fährt erst stoppen, sonst zu fahren
+  icon: mdi:roller-shade
